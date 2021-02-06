@@ -3,9 +3,13 @@ package skaing.a3;
 public class Main {
 
     public static void main(String[] args) {
-        Oval oval = new Oval(4.08f, 5.46f);
+        Oval oval = null;
+        try {
+            oval = new Oval(2f, 2f);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         System.out.println(oval);
-
     }
 }
