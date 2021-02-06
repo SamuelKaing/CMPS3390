@@ -2,7 +2,7 @@ package skaing.a3;
 
 
 public class Oval extends Circle {
-    private final Exception nonOvalException = new Exception("Radius 1 and 2 are the same. Use Circle Instead");
+    private final Exception nonOvalException = new Exception("Radius 1 and 2 are the same. Use Circle Instead.");
     private float radius2;
 
     public Oval() {
@@ -32,12 +32,12 @@ public class Oval extends Circle {
     }
 
     public double getArea() {
-        return (3.14 * getRadius() * radius2);
+        return (3.14 * getRadius() * this.radius2);
     }
 
     @Override
     public String toString() {
-        return String.format("%s Radius2: %-6.2f", super.toString(), this.radius2);
+        return String.format("%s Radius2: %-6.2f|", super.toString(), this.radius2);
     }
 
 }

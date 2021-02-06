@@ -17,7 +17,7 @@ public class Shape {
 
     @Override
     public String toString() {
-        return String.format("Type: %-15s| ", this.type);
+        return String.format("Type: %-15s|", this.type);
     }
 
 }
