@@ -17,7 +17,6 @@ public class RightTriangle extends Rectangle {
     public float getHeight() {
         return super.getHeight();
     }
-
     @Override
     public void setHeight(float height) {
         super.setHeight(height);
