@@ -4,6 +4,7 @@ public class Square extends Shape {
     private float width;
 
     public Square() {
+        super();
         this.setType(Type.SQUARE);
         this.width = 0.0f;
     }
@@ -27,7 +28,7 @@ public class Square extends Shape {
 
     @Override
     public String toString() {
-        return String.format("%s Area: %-8.2f| Width: %-7.2f| ", super.toString(),
+        return String.format("%s Area: %-8.2f| Width: %-7.2f|", super.toString(),
                 getArea(), this.width);
     }
 }

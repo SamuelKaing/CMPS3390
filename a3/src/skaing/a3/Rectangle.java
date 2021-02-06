@@ -5,6 +5,7 @@ public class Rectangle extends Square {
     private float height;
 
     public Rectangle() {
+        super();
         this.setType(Type.RECTANGLE);
         this.height = 0.0f;
     }
