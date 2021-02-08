@@ -12,6 +12,7 @@ public class Oval extends Circle {
     }
 
     public Oval(Float radius, Float radius2) throws Exception {
+        super();
         if (radius.equals(radius2)) {
             throw nonOvalException;
         }
@@ -24,8 +25,8 @@ public class Oval extends Circle {
         return radius2;
     }
 
-    public void setRadius2(float radius2) throws Exception {
-        if (getRadius() == radius2) {
+    public void setRadius2(Float radius2) throws Exception {
+        if (getRadius().equals(radius2)) {
             throw nonOvalException;
         }
         this.radius2 = Math.max(0.0f, radius2);
@@ -37,7 +38,7 @@ public class Oval extends Circle {
 
     @Override
     public String toString() {
-        return String.format("%s Radius2: %-6.2f|", super.toString(), this.radius2);
+        return String.format("%s Radius2: %-6.2f", super.toString(), this.radius2);
     }
 
 }

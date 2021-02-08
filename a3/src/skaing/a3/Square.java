@@ -10,6 +10,7 @@ public class Square extends Shape {
     }
 
     public Square(float width) {
+        super();
         this.setType(Type.SQUARE);
         this.setWidth(width);
     }

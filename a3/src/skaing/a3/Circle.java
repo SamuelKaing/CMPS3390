@@ -10,11 +10,12 @@ public class Circle extends Shape {
     }
 
     public Circle(float radius) {
+        super();
         this.setType(Type.CIRCLE);
         this.setRadius(radius);
     }
 
-    public float getRadius() {
+    public Float getRadius() {
         return this.radius;
     }
 
@@ -28,7 +29,7 @@ public class Circle extends Shape {
 
     @Override
     public String toString() {
-        return String.format("%s Area: %-7.2f| Radius: %-6.2f|",
+        return String.format("%s Area: %-8.2f| Radius: %-6.2f|",
                 super.toString(), this.getArea(), this.radius);
     }
 }

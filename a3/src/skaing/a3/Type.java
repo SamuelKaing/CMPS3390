@@ -8,3 +8,7 @@ public enum Type {
     RECTANGLE,
     RIGHTTRIANGLE
 }
+
+
+
+

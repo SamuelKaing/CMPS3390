@@ -10,8 +10,9 @@ public class Rectangle extends Square {
         this.height = 0.0f;
     }
 
-    public Rectangle(Float width, Float height) throws Exception {
-        if (width.equals(height)) {
+    public Rectangle(float width, float height) throws Exception {
+        super();
+        if (width == height) {
             throw nonRectangleException;
         }
         this.setType(Type.RECTANGLE);
@@ -20,19 +21,23 @@ public class Rectangle extends Square {
     }
 
     public float getHeight() {
-        return height;
+        return this.height;
     }
 
-    public void setHeight(float height) {
+    public void setHeight(float height) throws Exception {
+        if (getWidth() == height) {
+            throw nonRectangleException;
+        }
         this.height = Math.max(0.0f, height);
     }
 
+    @Override
     public double getArea() {
         return (getWidth() * this.height);
     }
 
     @Override
     public String toString() {
-        return String.format("%s Height: %-7.2f|", super.toString(), this.height);
+        return String.format("%s Height: %-7.2f", super.toString(), this.height);
     }
 }
