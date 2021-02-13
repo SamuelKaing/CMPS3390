@@ -11,7 +11,8 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 		Random rand = new Random();
 
-		System.out.print("Do you want a [S]ingle Thread or [D]ual Thread or [Q]uad Thread? ");
+		System.out.print("Do you want a [S]ingle Thread or [D]ual Thread or [Q]uad Thread "
+				+ "[N] Thread? ");
 		char selection = scan.next().charAt(0);
 
 		System.out.print("How many shapes do you want to sort? ");
@@ -52,6 +53,13 @@ public class Main {
 			case 'q':
 			case 'Q':
 				quadSort(shapes);
+				break;
+			case 'n':
+			case 'N':
+				System.out.println("How many threads do you want to start?");
+				int numThreads = scan.nextInt();
+				nSort(shapes, numThreads);
+				break;
 		}
     }
 
@@ -135,7 +143,34 @@ public class Main {
     	System.out.println("\nQuad Thread Sort Time: " + duration + " milliseconds");
 	}
 
-	private static void nSort(Shape[] shapes){
+	private static void nSort(Shape[] shapes, int threads) throws Exception {
+		if (threads != 1 && (threads % 2) != 0) {
+			throw new Exception("Number of Threads must be an even number");
+		}
+
+		int shapeCount = shapes.length / threads;
+		ThreadSort[] nsortThreads = new ThreadSort[threads];
+
+		for(int i=0; i<threads; i++) {
+			nsortThreads[i] = new ThreadSort(shapes, i * shapeCount, i * shapeCount + shapeCount);
+			nsortThreads[i].start();
+		}
+
+		for(ThreadSort t : nsortThreads) {
+			t.join();
+		}
+
+		MergeSort[] mSort = new MergeSort[nsortThreads.length];
+
+		for(int i = 0, j = 1; i < threads && j < (threads + 1); i+=2, j+=2) {
+			mSort[i] = new MergeSort(nsortThreads[i].gettShapes(), nsortThreads[j].gettShapes());
+			mSort[i].start();
+		}
+
+		for(Shape s : mSort[1].getSortedShapes()){
+			System.out.println(s);
+		}
+
 
 	}
 }
