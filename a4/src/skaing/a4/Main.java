@@ -5,6 +5,11 @@ import skaing.a3.*;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Main driver for a4
+ * @author Samuel Kaing
+ * @version 1.0
+ */
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -63,6 +68,11 @@ public class Main {
 		}
     }
 
+	/**
+	 * Handles single thread sorting of shapes array
+	 * @param shapes array of Shape that represents the amount of shapes being sorted by the user
+	 * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied
+	 */
 	private static void singleSort(Shape[] shapes) throws InterruptedException {
 		ThreadSort threadsort = new ThreadSort(shapes, 0, shapes.length);
 		long startTime = System.nanoTime();
@@ -78,6 +88,11 @@ public class Main {
 		System.out.println("\nSingle Thread Sort Time: " + duration + " milliseconds");
 	}
 
+	/**
+	 * Handles dual thread sorting of shapes arrau
+	 * @param shapes array of Shape that represents the amount of shapes being sorted by the user
+	 * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied
+	 */
 	private static void dualSort(Shape[] shapes) throws InterruptedException {
     	int mid = Math.round(shapes.length/2f);
 
@@ -103,6 +118,11 @@ public class Main {
 		System.out.println("\nDual Thread Sort Time: " + duration + " milliseconds");
 	}
 
+	/**
+	 * Handles quad thread sorting of shapes array
+	 * @param shapes array of Shape that represents the amount of shapes being sorted by the user
+	 * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied
+	 */
 	private static void quadSort(Shape[] shapes) throws InterruptedException {
     	int shapeCount = shapes.length / 4;
 		int shapesRemaining = shapes.length - (shapeCount * 3);
@@ -162,7 +182,7 @@ public class Main {
 
 		MergeSort[] mSort = new MergeSort[nsortThreads.length];
 
-		for(int i = 0, j = 1; i < threads && j < (threads + 1); i+=2, j+=2) {
+		for(int i = 0, j = 1; i < shapeCount && j < (shapeCount + 1); i+=2, j+=2) {
 			mSort[i] = new MergeSort(nsortThreads[i].gettShapes(), nsortThreads[j].gettShapes());
 			mSort[i].start();
 		}
