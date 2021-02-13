@@ -44,6 +44,7 @@ public class Shape {
         return String.format("Type: %-15s|", getType());
     }
 
+    public double getArea() { return 0.0d; }
 }
 
 
