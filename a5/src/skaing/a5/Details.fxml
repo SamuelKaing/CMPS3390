@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="@details.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="skaing.a5.DetailsController">
+   <top>
+      <ImageView fitHeight="60.0" fitWidth="550.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@Images/CoinTracker_logo.png" />
+         </image>
+         <effect>
+            <ColorAdjust brightness="0.2" contrast="0.49" hue="-1.0" saturation="0.76" />
+         </effect>
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="20.0" />
+         </BorderPane.margin>
+      </ImageView>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" onMouseClicked="#onDetailButtonClicked" prefHeight="100.0" prefWidth="200.0" styleClass="xrp-hbox" fx:id="xrpHBox">
+               <children>
+                  <ImageView fitHeight="152.0" fitWidth="142.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/XRPlogoTransparent.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="labXRPValue" prefHeight="77.0" prefWidth="287.0" textFill="WHITE">
+                     <font>
+                        <Font name="FreeSans Bold" size="60.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox fx:id="stelHBox" alignment="CENTER" onMouseClicked="#onDetailButtonClicked" prefHeight="100.0" prefWidth="200.0" styleClass="stel-hbox">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/Stellar.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="labSTELValue" prefHeight="77.0" prefWidth="287.0" textFill="WHITE">
+                     <font>
+                        <Font name="FreeSans Bold" size="60.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

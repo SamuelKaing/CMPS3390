@@ -1,0 +1,22 @@
+BorderPane {
+    -fx-background-image: url(Images/minSpace.jpg);
+    -fx-background-size: 99% 99%;
+}
+
+HBox {
+    -fx-background-radius: 30%;
+    -fx-background-color: aqua;
+    -fx-padding: 10 10;
+}
+
+.xrp-hbox {
+    -fx-background-color: #115268;
+}
+
+.stel-hbox {
+    -fx-background-color: #518abc;
+}
+
+VBox {
+    -fx-spacing: 30px;
+}
