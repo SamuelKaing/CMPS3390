@@ -19,6 +19,9 @@ public class XRPController {
     @FXML
     LineChart<String, Number> priceChart;
 
+    /**
+     * Class that adds points to create a line graph representing price over time
+     */
     public void initialize() {
         XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
         series.setName("XRP Price");
@@ -40,6 +43,11 @@ public class XRPController {
         priceChart.getData().add(series);
     }
 
+    /**
+     * Class that allows user to go back to previous window from XRP line graph
+     * @param mouseEvent object of MouseEvent that represents a user click
+     * @throws IOException
+     */
     public void onBackArrowClicked(MouseEvent mouseEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Details.fxml"));
         Stage primaryStage = (Stage) xrpBackArrow.getScene().getWindow();

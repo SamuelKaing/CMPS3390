@@ -22,16 +22,27 @@ public class DetailsController {
     @FXML
     HBox stelHBox;
 
+    /**
+     * Class that initializes the prices of each cryptocurrency
+     */
     public void initialize() {
         labXRPValue.setText("$0.5672");
         labSTELValue.setText("$0.5234");
         System.out.println("initialization");
     }
 
+    /**
+     * Constructor that automatically calls initialize()
+     */
     public DetailsController() {
         System.out.println("constructor");
     }
 
+    /**
+     * Class that detects user click and takes them to the according line graph
+     * @param mouseEvent object of MouseEvent that represents a user click
+     * @throws IOException
+     */
     public void onDetailButtonClicked(MouseEvent mouseEvent) throws IOException {
         if(mouseEvent.getSource() == xrpHBox) {
             System.out.println("Changed to XRP");
