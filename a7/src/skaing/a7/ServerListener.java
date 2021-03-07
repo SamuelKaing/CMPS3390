@@ -13,6 +13,12 @@ public class ServerListener extends Thread{
     private ObjectInputStream objectInputStream;
     Controller controller;
 
+    /**
+     * Constructor: sets socket and controller, creates inputStream and objectInputStream
+     * @param socket Socket that represents the servers socket
+     * @param controller Controller that represents any output given
+     * @throws IOException
+     */
     public ServerListener(Socket socket, Controller controller) throws IOException {
         this.socket = socket;
         this.controller = controller;
@@ -20,6 +26,9 @@ public class ServerListener extends Thread{
         objectInputStream = new ObjectInputStream(inputStream);
     }
 
+    /**
+     * Listens for messages from the server
+     */
     @Override
     public void run() {
         try{

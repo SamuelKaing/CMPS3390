@@ -60,7 +60,7 @@ public class Controller {
     }
 
     /**
-     * Cleans
+     * Cleans server when program closes
      * @throws IOException
      */
     public void exit() throws IOException {
@@ -69,6 +69,10 @@ public class Controller {
         socket.close();
     }
 
+    /**
+     * Adds message
+     * @param msg String that represents the message
+     */
     public void addMessage(String msg) {
         txtOutput.appendText(msg);
     }
