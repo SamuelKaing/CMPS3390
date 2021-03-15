@@ -36,7 +36,7 @@ public class ServerListener extends Thread{
     }
 
     /**
-     * Listens for messages as long as running is true
+     * Listens for messages as long as running is true.
      */
     @Override
     public void run() {

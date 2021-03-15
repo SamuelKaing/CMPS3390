@@ -24,7 +24,7 @@ import jforsythe.Message;
 import jforsythe.MessageType;
 
 /**
- * MainActivity class that handles the creation and controls of chat client
+ * MainActivity class that extends AppCompatActivity and handles the creation and controls of chat client
  * @author Samuel Kaing
  * @version 1.0
  */
