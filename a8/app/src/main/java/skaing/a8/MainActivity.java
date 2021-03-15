@@ -23,6 +23,11 @@ import java.net.Socket;
 import jforsythe.Message;
 import jforsythe.MessageType;
 
+/**
+ * MainActivity class that handles the creation and controls of chat client
+ * @author Samuel Kaing
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
     private EditText txtInput;
     private EditText txtOutput;
@@ -32,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
     private ObjectOutputStream objectOutputStream;
     private ServerListener serverListener;
 
+    /**
+     * Tells android application connects to internet and sets txtInput and txtOutput
+     * @param savedInstanceState Bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         getUserName();
     }
 
-
+    /**
+     * Properly disconnects client when chat is closed
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -59,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         }
     }
 
+    /**
+     * Connects to server and starts serverListener
+     */
     private void connect() {
         try {
             socket = new Socket("odin.cs.csub.edu", 3390);
@@ -80,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
 
     }
 
+    /**
+     * Gets User Name ... duh. Also makes sure user enters visible name
+     */
     private void getUserName() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("User Name");
@@ -100,6 +117,13 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         builder.show();
     }
 
+    /**
+     * Detects when message is entered and clears text once sent
+     * @param v TextView representing which TextView is focused
+     * @param actionId int
+     * @param event KeyEvent
+     * @return boolean
+     */
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if(event.getAction() == KeyEvent.ACTION_UP) {

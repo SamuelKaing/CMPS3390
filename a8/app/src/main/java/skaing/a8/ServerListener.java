@@ -9,6 +9,11 @@ import java.net.Socket;
 
 import jforsythe.Message;
 
+/**
+ * ServerListener that extends Thread and listens for messages from client
+ * @author Samuel Kaing
+ * @version 1.0
+ */
 public class ServerListener extends Thread{
     private Socket socket;
     private InputStream inputStream;
@@ -16,6 +21,9 @@ public class ServerListener extends Thread{
     private EditText output;
     public boolean running = true;
 
+    /**
+     * Constructor sets socket, output, inputStream, and objectInputStream
+     */
     public ServerListener(Socket socket, EditText output) {
         this.socket = socket;
         this.output = output;
@@ -27,6 +35,9 @@ public class ServerListener extends Thread{
         }
     }
 
+    /**
+     * Listens for messages as long as running is true
+     */
     @Override
     public void run() {
         try{
