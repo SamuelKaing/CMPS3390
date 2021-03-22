@@ -34,6 +34,8 @@ import cz.msebera.android.httpclient.Header;
  * A simple {@link Fragment} subclass.
  * Use the {@link DetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @author Samuel Kaing
+ * @version 1.0
  */
 public class DetailsFragment extends Fragment {
     private final Context context;
@@ -43,6 +45,11 @@ public class DetailsFragment extends Fragment {
     LineChart lineChart;
     int color = 0;
 
+    /**
+     * Constructor sets context and coin and sets color depending on coin
+     * @param context Context
+     * @param coin Coin that represents the cryptocoin
+     */
     public DetailsFragment(Context context, Coin coin) {
         this.coin = coin;
         this.context = context;
@@ -70,14 +77,13 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_details, container, false);
     }
 
     /**
      * Gets chart and sets it, gets line chart and animates it
-     * @param savedInstanceState
+     * @param savedInstanceState Bundle
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

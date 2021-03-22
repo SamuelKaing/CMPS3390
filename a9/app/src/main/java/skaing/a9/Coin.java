@@ -7,7 +7,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * Extends BaseObservable to allow it to be bind.  Holds name and value of coin.
+ * Extends BaseObservable to allow it to be bound.  Holds name and value of coin.
  * @author Samuel Kaing
  * @version 1.0
  */

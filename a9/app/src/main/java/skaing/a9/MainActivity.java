@@ -21,6 +21,11 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 import skaing.a9.databinding.ActivityMainBinding;
 
+/**
+ * Extends AppCompatActivity, Shows prices of coins and gives a graph of the last 90 days of prices
+ * @author Samuel Kaing
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
