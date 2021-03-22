@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -35,34 +36,46 @@ public class MainActivity extends AppCompatActivity {
         ripple = new Coin("ripple");
         getCurrentValue(stellar);
         getCurrentValue(ripple);
-        stellarFragment = new DetailsFragment(stellar);
-        rippleFragment = new DetailsFragment(ripple);
+        stellarFragment = new DetailsFragment(this, stellar);
+        rippleFragment = new DetailsFragment(this, ripple);
         ActivityMainBinding activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         activityMainBinding.setStellar(stellar);
         activityMainBinding.setRipple(ripple);
+        FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.flFragment, stellarFragment);
+        fragmentTransaction.commit();
     }
 
     /**
-     * Http request gets current price of coin
+     * Http request gets current price of coin every 10 seconds by binding it
      * @param coin Coin whose current price is being retrieved
      */
     private void getCurrentValue(Coin coin) {
-        String url = String.format("https://api.coingecko.com/api/v3/simple/price?ids=%s&vs_currencies=usd"
-                , coin.getName());
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            String url = String.format("https://api.coingecko.com/api/v3/simple/price?ids=%s&vs_currencies=usd"
+                    , coin.getName());
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(url, new JsonHttpResponseHandler() {
+            AsyncHttpClient client = new AsyncHttpClient();
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    JSONObject json = response.getJSONObject(coin.getName());
-                    double tmpPrice = json.getDouble("usd");
-                    coin.setCurValue(tmpPrice);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void run() {
+                client.get(url, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        try {
+                            JSONObject json = response.getJSONObject(coin.getName());
+                            Log.d("UPDATE", String.valueOf(json));
+                            double tmpPrice = json.getDouble("usd");
+                            coin.setCurValue(tmpPrice);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                handler.postDelayed(this, 10000);
             }
-        });
+        }, 500);
     }
 
     /**
