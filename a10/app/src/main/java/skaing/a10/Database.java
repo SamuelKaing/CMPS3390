@@ -20,9 +20,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Database class that adds and removes item to the Firestore database
+ * @author Samuel Kaing
+ * @version 1.0
+ */
 public class Database {
 
-    // Passes in db, which will add the "item" into the collection "selectedCollection"
+    /**
+     * Adds the "item" into the collection "selectedCollection" within the db
+     * @param db FirebaseFirestore which holds data on all items from each tab
+     * @param selectedCollection String which is the tab that is being added to
+     * @param item ListItem which is the item being added to the list
+     */
     public static void add(FirebaseFirestore db, String selectedCollection, ListItem item) {
         Map<String, Object> listItem = new HashMap<>();
         listItem.put("item", item);
@@ -44,7 +54,13 @@ public class Database {
 
     }
 
-    //Gets list when switching tabs and sorts by dttm
+    /**
+     * Gets lists when switching tabs and sorts by dttm
+     * @param db FirebaseFirestore which is the database that holds the lists
+     * @param selectedCollection String which is the tab whose list is being gotten
+     * @param items ArrayList which is the item that is being gotten
+     * @param itemsAdapter ArrayAdapter which is being used to notify the change
+     */
     public static void getList(FirebaseFirestore db, String selectedCollection
             , ArrayList<ListItem> items, ArrayAdapter<ListItem> itemsAdapter) {
 
@@ -74,6 +90,15 @@ public class Database {
     }
 
     // Removes item from Firestore database
+
+    /**
+     * Removes item from the Firestore database
+     * @param db FirebaseFirestore which is the database from which the item is being removed
+     * @param selectedCollection String which is the tab from which the item is being removed
+     * @param items ArrayList which is the item being removed
+     * @param itemAdapter ArrayAdapter which is the means of notifying the change
+     * @param removedItem ListItem which is the item being removed
+     */
     public static void removeItem(FirebaseFirestore db, String selectedCollection
             , ArrayList<ListItem> items, ArrayAdapter<ListItem> itemAdapter, ListItem removedItem) {
         db.collection(selectedCollection).whereEqualTo("item.dttm", removedItem.getDttm())

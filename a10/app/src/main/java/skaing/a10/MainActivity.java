@@ -18,6 +18,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Main driver class for a10
+ * @author Samuel Kaing
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
     private ListView listView;
     private EditText input;
@@ -48,12 +53,17 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
 
     }
 
+    /**
+     * Updates the list shown on screen when a tab is selected
+     */
     private void updateList() {
         showToast("Getting List", Toast.LENGTH_SHORT);
         Database.getList(db, selectedCollection, items, itemsAdapter);
     }
 
-    // Clears lists when switching to new tab
+    /**
+     * Clears lists when switching to new tab
+     */
     private void setupTabClickListener() {
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -83,7 +93,9 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         });
     }
 
-    // this is called when a list item is held long. Deletes items from list.
+    /**
+     * This is called when a list item is held long.  Deletes items from list.
+     */
     private void setupLongClickHandler() {
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
             ListItem tmpItem = items.remove(position);
@@ -94,15 +106,25 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         });
     }
 
-    // Displays "message" for "length" amount of time when item is removed from list
+    /**
+     * Displays "message" for "length" amount of time when item is removed from list
+     * @param message String which is the message that is shown on screen
+     * @param length int which is how long the message is displayed
+     */
     private void showToast(String message, int length) {
         Toast toast = Toast.makeText(this, message, length);
         toast.setGravity(Gravity.CENTER, 0, -30);
         toast.show();
     }
 
-    // When text is input in the EditText, this allows it to be sent
-    // and added to items array and clears the textbox to be used again
+    /**
+     * When text is input in the EditText, this allows it to be sent
+     * and added to items array and clears the textbox to be used again
+     * @param v TextView which is the view that is being changed
+     * @param actionId int which is the id of the action being done
+     * @param event KeyEvent which is done by the user
+     * @return boolean that is true
+     */
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if(event == null || event.getAction() == KeyEvent.ACTION_UP) {                  // if statement gets rid of extra empty input
