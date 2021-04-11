@@ -29,6 +29,11 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    /**
+     * Updates touchX and touchY when player touches screen
+     * @param event MotionEvent representing playing moving
+     * @return boolean
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         touchX = (int)event.getX();
@@ -37,6 +42,9 @@ public class GameView extends SurfaceView implements Runnable {
         return true;
     }
 
+    /**
+     * Main run function when game is played
+     */
     @Override
     public void run() {
         while(isPlaying) {
@@ -46,12 +54,18 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * Updates background as it scrolls and player position on touch
+     */
     private void update() {
         background1.update();
         background2.update();
         player.update(touchX, touchY);
     }
 
+    /**
+     * Draws background and player
+     */
     private void draw() {
         if(getHolder().getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
@@ -64,6 +78,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * Controls framerate
+     */
     private void sleep() {
         try {
             Thread.sleep(17);
@@ -72,9 +89,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-
-
-    // sets isPLaying to false when paused
+    /**
+     * Sets isPlaying to false when paused
+     */
     public void pause() {
         isPlaying = false;
         try {
@@ -83,11 +100,13 @@ public class GameView extends SurfaceView implements Runnable {
             e.printStackTrace();
         }
     }
-    // sets isPlaying to true when resumed
+
+    /**
+     * Sets isPlaying to true when resumed
+     */
     public void resume() {
         isPlaying = true;
         thread = new Thread(this);
         thread.start();
     }
-
 }
