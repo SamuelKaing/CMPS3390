@@ -27,13 +27,18 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    // pauses gameView when paused so background does not continue scrolling
+    /**
+     * Pauses gameView when paused so background does not continue scrolling
+     */
     @Override
     protected void onPause() {
         super.onPause();
         gameView.pause();
     }
-    //resumes gameView when resumed to continue background scrolling
+
+    /**
+     * Resumes gameView when resumed to continue background scrolling
+     */
     @Override
     protected void onResume() {
         super.onResume();

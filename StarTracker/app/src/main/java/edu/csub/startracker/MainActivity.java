@@ -18,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
+    /**
+     * Changes activity to GameView when play button is clicked
+     * @param view View representing which view is being shown
+     */
     public void onPlayButtonClicked(View view) {
         startActivity(new Intent(MainActivity.this, GameActivity.class));
     }

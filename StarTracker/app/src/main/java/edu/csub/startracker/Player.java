@@ -23,7 +23,10 @@ public class Player {
 
     ArrayList<Laser> lasers = new ArrayList<>();
 
-    // Puts sets images for different player movements, sets default player position
+    /**
+     * Sets images for different player movements and default player position
+     * @param res Resources used to get images and set dpi
+     */
     public Player(Resources res) {
         this.res = res;
         playerImg = BitmapFactory.decodeResource(res, R.mipmap.player);
@@ -41,7 +44,11 @@ public class Player {
 
     }
 
-    // Moves ship where player is touching with touchX and touchY, also displays ship turning image if moved
+    /**
+     * Moves ship where player is touching with touchX and touchY, also displays ship turning image if moved
+     * @param touchX int which is the x position the player touched
+     * @param touchY int which is the y position the player touched
+     */
     public void update(int touchX, int touchY) {
         if(touchX > 0 && touchY > 0) {
             this.x = touchX - (playerImg.getWidth() / 2f);
@@ -94,6 +101,10 @@ public class Player {
         }
     }
 
+    /**
+     * Draws Player
+     * @param canvas Canvas
+     */
     public void draw(Canvas canvas) {
         canvas.drawBitmap(curImage, this.x, this.y, this.paint);
 
