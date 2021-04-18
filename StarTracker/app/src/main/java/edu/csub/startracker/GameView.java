@@ -16,6 +16,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     private final Player player;
 
+    private EnemySpawner spanwer;
+
     /**
      * GameView which shows
      * @param context Context
@@ -32,6 +34,7 @@ public class GameView extends SurfaceView implements Runnable {
         background2.setY(screenY);
 
         player = new Player(res);
+        spanwer = new EnemySpawner(res);
 
     }
 
@@ -66,7 +69,10 @@ public class GameView extends SurfaceView implements Runnable {
     private void update() {
         background1.update();
         background2.update();
-        player.update(touchX, touchY);
+        player.updateTouch(touchX, touchY);
+        player.update();
+        spanwer.update();
+
     }
 
     /**
@@ -79,6 +85,7 @@ public class GameView extends SurfaceView implements Runnable {
             background1.draw(canvas);
             background2.draw(canvas);
             player.draw(canvas);
+            spanwer.draw(canvas);
 
             getHolder().unlockCanvasAndPost(canvas);
         }

@@ -6,12 +6,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class Laser {
+public class Laser implements GameObject {
 
     private float x, y;
     private Bitmap laser;
     private float dpi;
     private Paint paint = new Paint();
+    private float health = 100f;
+    private final int width, height;
 
     /**
      * Sets laser image and dpi
@@ -19,6 +21,8 @@ public class Laser {
      */
     public Laser(Resources res) {
         laser = BitmapFactory.decodeResource(res, R.mipmap.bullet);
+        width = laser.getWidth();
+        height = laser.getHeight();
         dpi = res.getDisplayMetrics().densityDpi;
     }
 
@@ -57,14 +61,36 @@ public class Laser {
      * Getter for laser's height
      * @return float which is the height of the laser
      */
+    @Override
     public float getHeight() {
-        return laser.getHeight();
+        return height;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return health > 0f;
+    }
+
+    @Override
+    public float getHealth() {
+        return health;
+    }
+
+    @Override
+    public float takeDamage(float damage) {
+        return health -= damage;
+    }
+
+    @Override
+    public float addHealth(float repairAmount) {
+        return health += repairAmount;
     }
 
     /**
      * Getter for x position
      * @return float which is the x position of the laser
      */
+    @Override
     public float getX() {
         return x;
     }
@@ -83,6 +109,11 @@ public class Laser {
      */
     public float getY() {
         return y;
+    }
+
+    @Override
+    public float getWidth() {
+        return width;
     }
 
     /**

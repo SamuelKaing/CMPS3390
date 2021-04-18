@@ -10,7 +10,7 @@ import android.util.DisplayMetrics;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Player {
+public class Player implements GameObject {
     private float x, y, prevX, prevY;
     private final Bitmap playerImg;
     private final Bitmap playerLeft;
@@ -20,8 +20,10 @@ public class Player {
     private final float dpi;
     private int frameTicks = 0, shotTicks = 0;
     private final Resources res;
+    private final int width, height;
 
     ArrayList<Laser> lasers = new ArrayList<>();
+    private float health = 100f;
 
     /**
      * Sets images for different player movements and default player position
@@ -34,6 +36,8 @@ public class Player {
         playerRight = BitmapFactory.decodeResource(res, R.mipmap.player_right);
 
         curImage = playerImg;
+        width = curImage.getWidth();
+        height = curImage.getHeight();
 
         DisplayMetrics dm = res.getDisplayMetrics();
         dpi = dm.densityDpi;
@@ -44,16 +48,20 @@ public class Player {
 
     }
 
+    public void updateTouch(int touchX, int touchY) {
+        if(touchX > 0 && touchY > 0) {
+            this.x = touchX - (playerImg.getWidth() / 2f);
+            this.y = touchY - (playerImg.getHeight() * 2f);
+        }
+    }
+
     /**
      * Moves ship where player is touching with touchX and touchY, also displays ship turning image if moved
      * @param touchX int which is the x position the player touched
      * @param touchY int which is the y position the player touched
      */
-    public void update(int touchX, int touchY) {
-        if(touchX > 0 && touchY > 0) {
-            this.x = touchX - (playerImg.getWidth() / 2f);
-            this.y = touchY - (playerImg.getHeight() * 2f);
-        }
+    @Override
+    public void update() {
 
         if(Math.abs(x - prevX) < 0.04 * dpi) {
             frameTicks++;
@@ -112,5 +120,45 @@ public class Player {
         for(Laser laser : lasers) {
             laser.draw(canvas);
         }
+    }
+
+    @Override
+    public float getX() {
+        return x;
+    }
+
+    @Override
+    public float getY() {
+        return y;
+    }
+
+    @Override
+    public float getWidth() {
+        return width;
+    }
+
+    @Override
+    public float getHeight() {
+        return height;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return health > 0f;
+    }
+
+    @Override
+    public float getHealth() {
+        return health;
+    }
+
+    @Override
+    public float takeDamage(float damage) {
+        return health -= damage;
+    }
+
+    @Override
+    public float addHealth(float repairAmount) {
+        return health += repairAmount;
     }
 }
