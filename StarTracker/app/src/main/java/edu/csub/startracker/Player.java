@@ -48,6 +48,11 @@ public class Player implements GameObject {
 
     }
 
+    /**
+     * Updates player position based on the x and y of where they touched
+     * @param touchX int that is the x position touched
+     * @param touchY int that is the y position touched
+     */
     public void updateTouch(int touchX, int touchY) {
         if(touchX > 0 && touchY > 0) {
             this.x = touchX - (playerImg.getWidth() / 2f);
@@ -62,7 +67,7 @@ public class Player implements GameObject {
      */
     @Override
     public void update() {
-
+        if(health <= 0) return;
         if(Math.abs(x - prevX) < 0.04 * dpi) {
             frameTicks++;
         } else {
@@ -98,7 +103,7 @@ public class Player implements GameObject {
         // remove lasers offscreen
         for(Iterator<Laser> iterator = lasers.iterator(); iterator.hasNext();) {
             Laser laser = iterator.next();
-            if(!laser.isOnScreen()) {
+            if(!laser.isOnScreen() || !laser.isAlive()) {
                 iterator.remove();
             }
         }
@@ -114,6 +119,7 @@ public class Player implements GameObject {
      * @param canvas Canvas
      */
     public void draw(Canvas canvas) {
+        if(health <= 0) return;
         canvas.drawBitmap(curImage, this.x, this.y, this.paint);
 
         // draw all lasers
@@ -122,43 +128,81 @@ public class Player implements GameObject {
         }
     }
 
+    /**
+     * Getter for x
+     * @return float that is x position
+     */
     @Override
     public float getX() {
         return x;
     }
 
+    /**
+     * Getter for y
+     * @return float that is y position
+     */
     @Override
     public float getY() {
         return y;
     }
 
+    /**
+     * Getter for width
+     * @return float that is the width
+     */
     @Override
     public float getWidth() {
         return width;
     }
 
+    /**
+     * Getter for height
+     * @return float that is height
+     */
     @Override
     public float getHeight() {
         return height;
     }
 
+    /**
+     * Returns true or false depending if the player's health is above 0
+     * @return boolean that is if the player is alive or not
+     */
     @Override
     public boolean isAlive() {
         return health > 0f;
     }
 
+    /**
+     * Getter for health
+     * @return float that is the player's health
+     */
     @Override
     public float getHealth() {
         return health;
     }
 
+    /**
+     * Subtracts player health based on damage taken
+     * @param damage float that is the amount of damage taken
+     * @return float that is the player's health after damage is applied
+     */
     @Override
     public float takeDamage(float damage) {
         return health -= damage;
     }
 
+    /**
+     * Adds health to player's health based on repairAmount
+     * @param repairAmount float that is the amount healed by the player
+     * @return float that is the player's health after being healed
+     */
     @Override
     public float addHealth(float repairAmount) {
         return health += repairAmount;
+    }
+
+    public ArrayList<Laser> getLasers() {
+        return lasers;
     }
 }

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -25,6 +27,19 @@ public class GameActivity extends AppCompatActivity {
 
         setContentView(gameView);
 
+    }
+
+    /**
+     * Shows game over when player health reaches 0
+     */
+    public void gameOver() {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 6000);
     }
 
     /**

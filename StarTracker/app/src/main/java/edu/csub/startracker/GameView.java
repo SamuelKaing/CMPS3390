@@ -3,8 +3,12 @@ package edu.csub.startracker;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
+
+import java.util.ArrayList;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -13,10 +17,15 @@ public class GameView extends SurfaceView implements Runnable {
     private boolean isPlaying = true;
     private Thread thread;
     private int touchX, touchY;
+    private ArrayList<Laser> lasers;
+    private ArrayList<GameObject> enemies;
+    private GameActivity gameActivity;
 
     private final Player player;
 
-    private EnemySpawner spanwer;
+    private EnemySpawner spawner;
+    private final float screenWidth, screenHeight;
+    private Paint textPaint = new Paint();
 
     /**
      * GameView which shows
@@ -24,17 +33,26 @@ public class GameView extends SurfaceView implements Runnable {
      * @param screenX int which is X position of background
      * @param screenY int which is Y position of background
      */
-    public GameView(Context context, int screenX, int screenY) {
+    public GameView(GameActivity context, int screenX, int screenY) {
         super(context);
 
         Resources res = getResources();
+        screenWidth = res.getDisplayMetrics().widthPixels;
+        screenHeight = res.getDisplayMetrics().heightPixels;
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(screenWidth * 0.1f);
 
         background1 = new Background(screenX, screenY, getResources());
         background2 = new Background(screenX, screenY, getResources());
         background2.setY(screenY);
 
         player = new Player(res);
-        spanwer = new EnemySpawner(res);
+        spawner = new EnemySpawner(res);
+
+        lasers = player.getLasers();
+        enemies = spawner.getEnemies();
+
+        gameActivity = context;
 
     }
 
@@ -71,8 +89,57 @@ public class GameView extends SurfaceView implements Runnable {
         background2.update();
         player.updateTouch(touchX, touchY);
         player.update();
-        spanwer.update();
+        spawner.update();
+        checkAllCollision();
+        checkEnemiesOffScreen();
+    }
 
+    /**
+     * Makes ships that go off screen past the player cause a game over
+     */
+    private void checkEnemiesOffScreen() {
+        for(GameObject go : enemies) {
+            if(go.getY() > screenHeight) {
+                player.takeDamage(100);
+                go.takeDamage(100);
+                gameActivity.gameOver();
+            }
+        }
+    }
+
+    /**
+     *Checks collisions of enemy ships with lasers as well as enemy ships with the player ship
+     */
+    private void checkAllCollision() {
+        for(Laser laser : lasers) {
+            for(GameObject go : enemies) {
+                if(checkCollision(laser, go)) {
+                    laser.takeDamage(100);
+                    go.takeDamage(25);
+                }
+            }
+        }
+
+        for(GameObject go : enemies) {
+            if(checkCollision(player, go)) {
+                player.takeDamage(100);
+                go.takeDamage(100);
+                gameActivity.gameOver();
+            }
+        }
+    }
+
+    /**
+     * Checks collision with enemies and lasers
+     * @param g1 GameObject that is the laser
+     * @param g2 GameObject that is the enemy ship
+     * @return boolean that returns if a ship has been hit or not
+     */
+    private boolean checkCollision(GameObject g1, GameObject g2) {
+        return g1.getX() < g2.getX() + g2.getWidth() &&
+                g1.getX() + g1.getWidth() > g2.getX() &&
+                g1.getY() < g2.getY() + g2.getHeight() &&
+                g1.getY() + g1.getHeight() > g2.getY();
     }
 
     /**
@@ -84,8 +151,12 @@ public class GameView extends SurfaceView implements Runnable {
 
             background1.draw(canvas);
             background2.draw(canvas);
+
+            if(!player.isAlive()) {
+                canvas.drawText("GAME OVER", screenWidth / 4f, screenHeight / 2f, textPaint);
+            }
             player.draw(canvas);
-            spanwer.draw(canvas);
+            spawner.draw(canvas);
 
             getHolder().unlockCanvasAndPost(canvas);
         }

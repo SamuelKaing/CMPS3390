@@ -58,7 +58,7 @@ public class Laser implements GameObject {
     }
 
     /**
-     * Getter for laser's height
+     * Override Getter for laser's height
      * @return float which is the height of the laser
      */
     @Override
@@ -66,21 +66,39 @@ public class Laser implements GameObject {
         return height;
     }
 
+    /**
+     * Returns true or false if ship has more than 0 health
+     * @return boolean depending on ship health
+     */
     @Override
     public boolean isAlive() {
         return health > 0f;
     }
 
+    /**
+     * Getter for ship health
+     * @return float that is the player's ship health
+     */
     @Override
     public float getHealth() {
         return health;
     }
 
+    /**
+     * Subtracts health based on damage taken
+     * @param damage float that is the amount of damage taken
+     * @return float that is the player's ship health after damage
+     */
     @Override
     public float takeDamage(float damage) {
         return health -= damage;
     }
 
+    /**
+     * Adds health based on repairAmount
+     * @param repairAmount float that is the amount of health the ship heals
+     * @return float that is the player's ship health after repairAmount
+     */
     @Override
     public float addHealth(float repairAmount) {
         return health += repairAmount;
@@ -111,6 +129,10 @@ public class Laser implements GameObject {
         return y;
     }
 
+    /**
+     * Getter for width
+     * @return float that is the width
+     */
     @Override
     public float getWidth() {
         return width;

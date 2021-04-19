@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class EnemySpawner {
@@ -17,6 +18,10 @@ public class EnemySpawner {
     Resources res;
     private Paint paint = new Paint();
 
+    /**
+     * Constructor sets enemies, screenWidth, res, spawnTick, and paint
+     * @param res Resources used to pull data
+     */
     public EnemySpawner(Resources res) {
         enemies = new ArrayList<>();
         screenWidth = res.getDisplayMetrics().widthPixels;
@@ -26,6 +31,9 @@ public class EnemySpawner {
         paint.setTextSize(screenWidth * 0.05f);
     }
 
+    /**
+     * Displays ships in waves, removes dead enemies
+     */
     public void update() {
         frameTick++;
 
@@ -37,8 +45,6 @@ public class EnemySpawner {
             // wait some frames to start the next wave
 
         } */
-
-
 
         // spawning logic
         // wait a given amount fo frames
@@ -63,7 +69,6 @@ public class EnemySpawner {
                 enemies.add(new Enemy02(res, x, y));
                 enemy02Spawned++;
             }
-
         }
 
         if(enemy01Spawned >= wave && enemy02Spawned >= wave) {
@@ -77,11 +82,19 @@ public class EnemySpawner {
         }
 
         // update all enemies
-        for(GameObject go : enemies) {
+        for(Iterator<GameObject> iterator = enemies.iterator(); iterator.hasNext();) {
+            GameObject go = iterator.next();
             go.update();
+            if(!go.isAlive()) {
+                iterator.remove();
+            }
         }
     }
 
+    /**
+     * Draws wave number and enemy ships
+     * @param canvas Canvas used to display text and enemies
+     */
     public void draw(Canvas canvas) {
 
         canvas.drawText("Wave: " + wave, screenWidth * 0.05f, screenWidth * 0.05f, paint);
@@ -91,5 +104,11 @@ public class EnemySpawner {
         }
     }
 
-
+    /**
+     * Getter for enemies
+     * @return ArrayList that holds GameObjects of both enemy01 and 02
+     */
+    public ArrayList<GameObject> getEnemies() {
+        return enemies;
+    }
 }
