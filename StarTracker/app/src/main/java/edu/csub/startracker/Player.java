@@ -89,7 +89,7 @@ public class Player implements GameObject {
         shotTicks++;
 
         // see if we need to shoot
-        if(shotTicks >= 15) {
+        if(shotTicks >= 11) {
             // shoot here
             Laser tmp = new Laser(this.res);
             tmp.setX(x + (playerImg.getWidth() / 2f) - tmp.getMidX());
