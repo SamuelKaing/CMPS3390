@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets top scores based on howMany
+     * @param howMany int which is the number of top scores
+     */
     private void getTopScores(int howMany) {
         ListView highScores = findViewById(R.id.lvTopScores);
         highScore.getHighScores(howMany, highScores, this);

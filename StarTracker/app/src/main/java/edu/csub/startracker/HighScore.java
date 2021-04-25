@@ -35,7 +35,10 @@ public final class HighScore {
         return INSTANCE;
     }
 
-    // adds score when laser hits, updates highscore if it is beaten
+    /**
+     * Adds score when laser hits, updates highScore if it is beaten
+     * @param score int which is the points to add to the score
+     */
     public void addScore(int score) {
         curScore += score;
         if(curScore > highScore) {
@@ -43,26 +46,51 @@ public final class HighScore {
         }
     }
 
+    /**
+     * Getter for curScore
+     * @return int curScore
+     */
     public int getCurScore() {
         return curScore;
     }
 
+    /**
+     * Getter for highScore
+     * @return int highScore
+     */
     public int getHighScore() {
         return highScore;
     }
 
+    /**
+     * Resets curScore to 0
+     */
     public void resetCurScore() {
         curScore = 0;
     }
 
+    /**
+     * Sets playerName
+     * @param playerName String that represents player
+     */
     public void setPlayerName(String playerName) {
         name = playerName;
     }
 
+    /**
+     * Getter for player name
+     * @return String playerName
+     */
     public String getPlayerName() {
         return name;
     }
 
+    /**
+     * Gets highScore from Firestore Database
+     * @param howMany int which is how many top scores to get
+     * @param highscores ListView
+     * @param context Context
+     */
     public void getHighScores(int howMany, ListView highscores, Context context) {
         ArrayList<String> topScores = new ArrayList<>();
 
@@ -88,6 +116,9 @@ public final class HighScore {
                 });
     }
 
+    /**
+     * Posts highScore to database
+     */
     public void postHighScore() {
         Map<String, Integer> hs = new HashMap<>();
         hs.put("score", highScore);
