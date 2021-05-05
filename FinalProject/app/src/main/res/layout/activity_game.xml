@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameActivity"
+    android:background="@color/wheat">
+
+    <FrameLayout
+        android:id="@+id/flFragment"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llNavbar"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <LinearLayout
+        android:id="@+id/llNavbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/flFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnMap"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/map_button"
+            android:src="@mipmap/map" />
+
+        <ImageButton
+            android:id="@+id/btnJournal"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/journal_button"
+            android:src="@mipmap/journal" />
+
+        <ImageButton
+            android:id="@+id/btnGraveyard"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/graveyard_button"
+            android:src="@mipmap/graveyard" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
