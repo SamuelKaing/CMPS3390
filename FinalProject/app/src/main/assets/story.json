@@ -1,0 +1,49 @@
+{
+  "positionCell": [{
+    "text": "Your eyes open to find a dark room",
+    "choice1": [{
+      "btnText": "Look for an exit",
+      "nextPosition": "positionCellDoor",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Observe surrounding",
+      "nextPosition": "positionBrick",
+      "required": []
+    }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionBrick": [{
+    "text": "There's a small hole in the roof of the room.  The brick once there, lays on the ground",
+    "choice1": [{
+      "btnText": "Take the brick",
+      "nextPosition": "positionCell",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionCellDoor": [{
+    "text": "Rusty gate, could break the lock with something heavy",
+    "choice1": [{
+      "btnText": "Go back",
+      "nextPosition": "positionCell",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Break the lock",
+      "nextPosition": "positionSmallHall",
+      "required": [{
+        "item": "brick",
+        "noItem": "Can't do that"
+      }]
+    }],
+    "choice3": [],
+    "choice4": []
+  }]
+
+}

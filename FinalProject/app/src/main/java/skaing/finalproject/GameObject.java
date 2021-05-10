@@ -3,11 +3,11 @@ package skaing.finalproject;
 public interface GameObject {
     void update();
 
-    float getSpeed(float speed);
-    float setSpeed(float speed);
+    float getSpeed();
+    void setSpeed(float speed);
 
     float getHealth();
-    float takeDamage(float damageTaken);
-    float addHealth(float amountHealed);
-    float addXP(float xpGained);
+    void takeDamage(float damageTaken);
+    void addHealth(float amountHealed);
+    void addXP(float xpGained);
 }
