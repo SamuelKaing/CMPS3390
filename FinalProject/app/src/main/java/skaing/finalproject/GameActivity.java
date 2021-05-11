@@ -1,5 +1,6 @@
 package skaing.finalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -11,7 +12,7 @@ import android.widget.ImageButton;
 import java.io.InputStream;
 
 public class GameActivity extends AppCompatActivity {
-    private ImageButton btnGraveyard;
+    //private ImageButton btnGraveyard;
     public static Fragment storyFragment;
 
     @Override
@@ -22,8 +23,6 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        Player player = new Player();
-
         // Creates new fragments of each fragment class
         Fragment mapFragment = new MapFragment();
         Fragment journalFragment = new JournalFragment();
@@ -33,7 +32,7 @@ public class GameActivity extends AppCompatActivity {
         // Sets UI buttons
         ImageButton btnJournal = findViewById(R.id.btnJournal);
         ImageButton btnMap = findViewById(R.id.btnMap);
-        btnGraveyard = findViewById(R.id.btnGraveyard);
+        ImageButton btnGraveyard = findViewById(R.id.btnGraveyard);
 
         // Sets default fragment as Story Fragment
         if(savedInstanceState == null) {
@@ -79,6 +78,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public static void gameOver() {
     }

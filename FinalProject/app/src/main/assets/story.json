@@ -1,6 +1,6 @@
 {
   "positionCell": [{
-    "text": "Your eyes open to find a dark room",
+    "text": "Your eyes open to find a dark room.",
     "choice1": [{
       "btnText": "Look for an exit",
       "nextPosition": "positionCellDoor",
@@ -16,7 +16,7 @@
   }],
 
   "positionBrick": [{
-    "text": "There's a small hole in the roof of the room.  The brick once there, lays on the ground",
+    "text": "There's a small hole in the roof of the room. The bricks, once there, lay on the ground.",
     "choice1": [{
       "btnText": "Take the brick",
       "nextPosition": "positionCell",
@@ -28,7 +28,7 @@
   }],
 
   "positionCellDoor": [{
-    "text": "Rusty gate, could break the lock with something heavy",
+    "text": "A rusty gate ... could break the lock with something heavy.",
     "choice1": [{
       "btnText": "Go back",
       "nextPosition": "positionCell",

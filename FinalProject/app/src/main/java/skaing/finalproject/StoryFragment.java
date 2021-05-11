@@ -16,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -26,12 +25,33 @@ public class StoryFragment extends Fragment {
     private View view;
     private TextView text;
     private Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
+    private static String position = "positionCell";
+    private static Bundle savedState = null;
+    private static String nextPosition;
 
+    /**
+     * Override onCreateView() method.
+     * Sets view, text, buttons, and calls getJSON() to begin story.
+     * @param inflater LayoutInflater used to inflate view
+     * @param container ViewGroup (not used)
+     * @param savedInstanceState Bundle. (onSaveInstanceState method not called for some reason.
+     *                           Had to manually create alternate method (savedPositionState()).
+     * @return View which is the storyFragment's view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_story, container, false);
+
+        // Checks savedState bundle to make sure player position is not lost on fragment change
+        if(savedState != null) {
+            position = savedState.getString("savedPosition");
+        } else {
+            nextPosition = position;
+        }
 
         text = view.findViewById(R.id.txtStory);
 
@@ -45,9 +65,9 @@ public class StoryFragment extends Fragment {
         btnChoice4 = view.findViewById(R.id.btnChoice4);
         btnChoice4.setPaintFlags(btnChoice4.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-
+        // Starts story
         try {
-            getJSON("positionCell");
+            getJSON(position);
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
@@ -56,8 +76,9 @@ public class StoryFragment extends Fragment {
     }
 
     /**
-     * Parses data from story.json to set text and button text.  Makes my brain hurt.
-     * Recalls itself when button is pressed to change position
+     * Parses data from story.json to set text and button text.
+     * Sets nextPosition (not to be confused with positionNext), which is used to save the state.
+     * Recalls itself when button is pressed to change position.
      * @param position String that determines the next position of the player
      * @throws IOException for when getString("") is called
      * @throws JSONException for when getJSON("") is called
@@ -109,6 +130,7 @@ public class StoryFragment extends Fragment {
                             public void onClick(View v) {
                                 try {
                                     String positionNext = choiceInfo.getString("nextPosition");
+                                    nextPosition = positionNext;
                                     getJSON(positionNext);
                                 } catch (JSONException | IOException e) {
                                     e.printStackTrace();
@@ -128,6 +150,7 @@ public class StoryFragment extends Fragment {
                             public void onClick(View v) {
                                 try {
                                     String positionNext = choiceInfo.getString("nextPosition");
+                                    nextPosition = positionNext;
                                     getJSON(positionNext);
                                 } catch (JSONException | IOException e) {
                                     e.printStackTrace();
@@ -147,6 +170,7 @@ public class StoryFragment extends Fragment {
                             public void onClick(View v) {
                                 try {
                                     String positionNext = choiceInfo.getString("nextPosition");
+                                    nextPosition = positionNext;
                                     getJSON(positionNext);
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
@@ -166,6 +190,7 @@ public class StoryFragment extends Fragment {
                             public void onClick(View v) {
                                 try {
                                     String positionNext = choiceInfo.getString("nextPosition");
+                                    nextPosition = positionNext;
                                     getJSON(positionNext);
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
@@ -182,10 +207,29 @@ public class StoryFragment extends Fragment {
                 btnChoice4.setTransformationMethod(null);
 
             }
+    }
 
-            Log.d("HEADS UP: ", "MADE IT TO END OF CLASS");
+    /**
+     * Override onStop() method.
+     * Instantiates savedState as a new bundle to be used
+     * in savePositionState() method.
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
 
+        savedState = new Bundle();
+        savePositionState(savedState);
 
     }
 
+    /**
+     * Saves variable nextPosition when fragment is changed.
+     * Allows position to be set to nextPosition when created again,
+     * essentially saving the state of the storyFragment.
+     * @param outState Bundle used to store nextPosition for later use
+     */
+    public void savePositionState(Bundle outState) {
+        outState.putString("savedPosition", nextPosition);
+    }
 }
