@@ -15,17 +15,23 @@
     "choice4": []
   }],
 
+
   "positionBrick": [{
     "text": "There's a small hole in the roof of the room. The bricks, once there, lay on the ground.",
     "choice1": [{
+      "btnText": "Go Back",
+      "nextPosition": "positionCell",
+      "required": []
+    }],
+    "choice2": [{
       "btnText": "Take the brick",
       "nextPosition": "positionCell",
       "required": []
     }],
-    "choice2": [],
     "choice3": [],
     "choice4": []
   }],
+
 
   "positionCellDoor": [{
     "text": "A rusty gate ... could break the lock with something heavy.",
@@ -36,14 +42,43 @@
     }],
     "choice2": [{
       "btnText": "Break the lock",
-      "nextPosition": "positionSmallHall",
+      "nextPosition": "positionHall",
       "required": [{
         "item": "brick",
-        "noItem": "Can't do that"
+        "nextPosition": "positionNoBrick"
       }]
     }],
     "choice3": [],
     "choice4": []
-  }]
+  }],
+
+  "positionNoBrick": [{
+    "text": "You try to break the lock. No luck.",
+    "choice1": [{
+      "btnText": "Try something else",
+      "nextPosition": "positionCellDoor",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+
+  "positionHall": [{
+    "text": "You enter a dilapidated hallway. Light shines from a large hole in the wall.",
+    "choice1": [{
+      "btnText": "Walk to the end of the hall",
+      "nextPosition": "positionEndHall",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Approach the hole in the wall.",
+      "nextPosition": "positionHole",
+      "required": []
+    }],
+    "choice3": [],
+    "choice4": []
+}]
 
 }

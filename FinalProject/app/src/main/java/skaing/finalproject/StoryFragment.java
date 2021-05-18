@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +26,14 @@ public class StoryFragment extends Fragment {
     private Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
     private static String position = "positionCell";
     private static Bundle savedState = null;
-    private static String nextPosition;
+    private static String savedPosition;
+    private static String reqItem1, reqItem2, reqItem3, reqItem4, noItemPosition1, noItemPosition2,
+    noItemPosition3, noItemPosition4;
 
     /**
      * Override onCreateView() method.
      * Sets view, text, buttons, and calls getJSON() to begin story.
+     *
      * @param inflater LayoutInflater used to inflate view
      * @param container ViewGroup (not used)
      * @param savedInstanceState Bundle. (onSaveInstanceState method not called for some reason.
@@ -47,10 +49,10 @@ public class StoryFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_story, container, false);
 
         // Checks savedState bundle to make sure player position is not lost on fragment change
-        if(savedState != null) {
+        if (savedState != null) {
             position = savedState.getString("savedPosition");
         } else {
-            nextPosition = position;
+            savedPosition = position;
         }
 
         text = view.findViewById(R.id.txtStory);
@@ -77,19 +79,15 @@ public class StoryFragment extends Fragment {
 
     /**
      * Parses data from story.json to set text and button text.
-     * Sets nextPosition (not to be confused with positionNext), which is used to save the state.
+     * Sets savedPosition, which is used to save the state.
      * Recalls itself when button is pressed to change position.
+     *
      * @param position String that determines the next position of the player
-     * @throws IOException for when getString("") is called
+     * @throws IOException   for when getString("") is called
      * @throws JSONException for when getJSON("") is called
      */
     public void getJSON(String position) throws IOException, JSONException {
-        btnChoice1.setText("");
-        btnChoice2.setText("");
-        btnChoice3.setText("");
-        btnChoice4.setText("");
-
-        String jsonString;
+        resetStrings();
 
         InputStream inputStream = getActivity().getAssets().open("story.json");
 
@@ -98,115 +96,256 @@ public class StoryFragment extends Fragment {
         inputStream.read(buffer);
         inputStream.close();
 
-        jsonString = new String(buffer, StandardCharsets.UTF_8);
+        String jsonString = new String(buffer, StandardCharsets.UTF_8);
         JSONObject jsonObj = new JSONObject(jsonString);
 
         JSONArray jArray = jsonObj.getJSONArray(position);
 
-            // Reads jArray and parses data
-            for (int i = 0; i < jArray.length(); i++) {
-                JSONObject info = jArray.getJSONObject(i);
-                JSONArray choice1 = info.getJSONArray("choice1");
-                JSONArray choice2 = info.getJSONArray("choice2");
-                JSONArray choice3 = info.getJSONArray("choice3");
-                JSONArray choice4 = info.getJSONArray("choice4");
+        // Reads jArray and parses data
+        for (int i = 0; i < jArray.length(); i++) {
+            JSONObject info = jArray.getJSONObject(i);
+            JSONArray choice1 = info.getJSONArray("choice1");
+            JSONArray choice2 = info.getJSONArray("choice2");
+            JSONArray choice3 = info.getJSONArray("choice3");
+            JSONArray choice4 = info.getJSONArray("choice4");
 
-                text.setText(info.getString("text"));
+            text.setText(info.getString("text"));
 
-                // If statements check to see if there is anything inside choice arrays
-                // Method of parsing is the same for each choice array
-                if (choice1 != null && choice1.length() > 0) {
-                    // Loop to check if choices have any required items & changes position
-                    for (int ii = 0; ii < choice1.length(); ii++) {
-                        JSONObject choiceInfo = choice1.getJSONObject(ii);
-                        //JSONArray required = choiceInfo.getJSONArray("required");
+            // If statements check to see if there is anything inside choice JSONArrays
+            // Method of parsing is the same for each choice array
+            if (choice1 != null && choice1.length() > 0) {
 
-                        // Sets button text
-                        btnChoice1.setText(choiceInfo.getString("btnText"));
+                // Loop to check if choices have any required items & changes position
+                for (int ii = 0; ii < choice1.length(); ii++) {
+                    JSONObject choiceInfo = choice1.getJSONObject(ii);
+                    JSONArray requirements = choiceInfo.getJSONArray("required");
 
-                        // Changes position when button is clicked
-                        btnChoice1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                    // That's right, another array and for loop to check if there's anything inside requirements JSONArray (i.e reqItem and noItemPosition)
+                    // This is to check if there are any required items for the choice
+                    if (requirements != null && requirements.length() > 0) {
+                        for (int iii = 0; iii < requirements.length(); iii++) {
+                            JSONObject reqInfo = requirements.getJSONObject(iii);
+
+                            reqItem1 = reqInfo.getString("item");
+                            noItemPosition1 = reqInfo.getString("nextPosition");
+                        }
+                    }
+
+                    // Sets button text
+                    btnChoice1.setText(choiceInfo.getString("btnText"));
+
+                    // Changes position when button is clicked
+                    btnChoice1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String positionNext;
+
+                            // If player has the required item, remove item from inventory and set positions
+                            // Has the same function if there is no required item
+                            // Function getJSON() is recalled here
+                            if (GameActivity.checkInventory(reqItem1) || reqItem1.equals("")) {
                                 try {
-                                    String positionNext = choiceInfo.getString("nextPosition");
-                                    nextPosition = positionNext;
+                                    if(!reqItem1.equals("")) {
+                                        GameActivity.removeFromInventory(reqItem1);
+                                    }
+                                    positionNext = choiceInfo.getString("nextPosition");
+                                    savedPosition = positionNext;
+                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
                                     getJSON(positionNext);
                                 } catch (JSONException | IOException e) {
                                     e.printStackTrace();
                                 }
                             }
-                        });
-                    }
-                }
-                if (choice2 != null && choice2.length() > 0) {
-                    for (int ii = 0; ii < choice2.length(); ii++) {
-                        JSONObject choiceInfo = choice2.getJSONObject(ii);
-                        //JSONArray required = choiceInfo.getJSONArray("required");
-                        btnChoice2.setText(choiceInfo.getString("btnText"));
-
-                        btnChoice2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                            // Else change positionNext to noItemPosition and recall getJSON() with that
+                            else {
+                                positionNext = noItemPosition1;
+                                savedPosition = positionNext;
                                 try {
-                                    String positionNext = choiceInfo.getString("nextPosition");
-                                    nextPosition = positionNext;
-                                    getJSON(positionNext);
-                                } catch (JSONException | IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
-                }
-                if (choice3 != null && choice3.length() > 0) {
-                    for (int ii = 0; ii < choice3.length(); ii++) {
-                        JSONObject choiceInfo = choice3.getJSONObject(ii);
-                        //JSONArray required = choiceInfo.getJSONArray("required");
-                        btnChoice3.setText(choiceInfo.getString("btnText"));
-
-                        btnChoice3.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                try {
-                                    String positionNext = choiceInfo.getString("nextPosition");
-                                    nextPosition = positionNext;
+                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
                                     getJSON(positionNext);
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
-                        });
-                    }
+                        }
+                    });
                 }
-                if (choice4 != null && choice4.length() > 0) {
-                    for (int ii = 0; ii < choice4.length(); ii++) {
-                        JSONObject choiceInfo = choice4.getJSONObject(ii);
-                        //JSONArray required = choiceInfo.getJSONArray("required");
-                        btnChoice4.setText(choiceInfo.getString("btnText"));
-
-                        btnChoice4.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                try {
-                                    String positionNext = choiceInfo.getString("nextPosition");
-                                    nextPosition = positionNext;
-                                    getJSON(positionNext);
-                                } catch (IOException | JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
-                }
-
-                // Properly capitalizes button text
-                btnChoice1.setTransformationMethod(null);
-                btnChoice2.setTransformationMethod(null);
-                btnChoice3.setTransformationMethod(null);
-                btnChoice4.setTransformationMethod(null);
-
             }
+            if (choice2 != null && choice2.length() > 0) {
+                for (int ii = 0; ii < choice2.length(); ii++) {
+                    JSONObject choiceInfo = choice2.getJSONObject(ii);
+                    JSONArray requirements = choiceInfo.getJSONArray("required");
+
+                    if (requirements != null && requirements.length() > 0) {
+                        for (int iii = 0; iii < requirements.length(); iii++) {
+                            JSONObject reqInfo = requirements.getJSONObject(iii);
+
+                            reqItem2 = reqInfo.getString("item");
+                            noItemPosition2 = reqInfo.getString("nextPosition");
+                        }
+                    }
+
+                    btnChoice2.setText(choiceInfo.getString("btnText"));
+
+                    btnChoice2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String positionNext;
+                            if (GameActivity.checkInventory(reqItem2) || reqItem2.equals("")) {
+                                try {
+                                    if(!reqItem2.equals("")) {
+                                        GameActivity.removeFromInventory(reqItem2);
+                                    }
+                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
+                                    positionNext = choiceInfo.getString("nextPosition");
+                                    savedPosition = positionNext;
+                                    getJSON(positionNext);
+                                } catch (JSONException | IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                positionNext = noItemPosition2;
+                                savedPosition = positionNext;
+                                try {
+                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
+                                    getJSON(positionNext);
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            if (choice3 != null && choice3.length() > 0) {
+                for (int ii = 0; ii < choice3.length(); ii++) {
+                    JSONObject choiceInfo = choice3.getJSONObject(ii);
+
+                    JSONArray requirements = choiceInfo.getJSONArray("required");
+                    if (requirements != null && requirements.length() > 0) {
+                        for (int iii = 0; iii < requirements.length(); iii++) {
+                            JSONObject reqInfo = requirements.getJSONObject(iii);
+
+                            reqItem3 = reqInfo.getString("item");
+                            noItemPosition3 = reqInfo.getString("noItem");
+                        }
+                    }
+
+                    //JSONArray required = choiceInfo.getJSONArray("required");
+                    btnChoice3.setText(choiceInfo.getString("btnText"));
+
+                    btnChoice3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String positionNext;
+                            if (GameActivity.checkInventory(reqItem3) || reqItem3.equals("")) {
+                                try {
+                                    if(!reqItem3.equals("")) {
+                                        GameActivity.removeFromInventory(reqItem3);
+                                    }
+                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
+                                    positionNext = choiceInfo.getString("nextPosition");
+                                    savedPosition = positionNext;
+                                    getJSON(positionNext);
+                                } catch (JSONException | IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                positionNext = noItemPosition3;
+                                savedPosition = positionNext;
+                                try {
+                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
+                                    getJSON(positionNext);
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            if (choice4 != null && choice4.length() > 0) {
+                for (int ii = 0; ii < choice4.length(); ii++) {
+                    JSONObject choiceInfo = choice4.getJSONObject(ii);
+
+                    JSONArray requirements = choiceInfo.getJSONArray("required");
+                    if (requirements != null && requirements.length() > 0) {
+                        for (int iii = 0; iii < requirements.length(); iii++) {
+                            JSONObject reqInfo = requirements.getJSONObject(iii);
+
+                            reqItem4 = reqInfo.getString("item");
+                            noItemPosition4 = reqInfo.getString("noItem");
+                        }
+                    }
+
+                    //JSONArray required = choiceInfo.getJSONArray("required");
+                    btnChoice4.setText(choiceInfo.getString("btnText"));
+
+                    btnChoice4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String positionNext;
+                            if (GameActivity.checkInventory(reqItem4) || reqItem4.equals("")) {
+                                try {
+                                    if(!reqItem4.equals("")) {
+                                        GameActivity.removeFromInventory(reqItem4);
+                                    }
+                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
+                                    positionNext = choiceInfo.getString("nextPosition");
+                                    savedPosition = positionNext;
+                                    getJSON(positionNext);
+                                } catch (JSONException | IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                positionNext = noItemPosition4;
+                                savedPosition = positionNext;
+                                try {
+                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
+                                    getJSON(positionNext);
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Properly capitalizes button text
+            btnChoice1.setTransformationMethod(null);
+            btnChoice2.setTransformationMethod(null);
+            btnChoice3.setTransformationMethod(null);
+            btnChoice4.setTransformationMethod(null);
+
+            // getActivity() is a context
+        }
+    }
+
+    /**
+     * Resets strings to empty after each recurrence in getJSON()
+     */
+    public void resetStrings() {
+        btnChoice1.setText("");
+        btnChoice2.setText("");
+        btnChoice3.setText("");
+        btnChoice4.setText("");
+        reqItem1 = "";
+        reqItem2 = "";
+        reqItem3 = "";
+        reqItem4 = "";
+        noItemPosition1 = "";
+        noItemPosition2 = "";
+        noItemPosition3 = "";
+        noItemPosition4 = "";
     }
 
     /**
@@ -217,19 +356,18 @@ public class StoryFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-
         savedState = new Bundle();
         savePositionState(savedState);
-
     }
 
     /**
      * Saves variable nextPosition when fragment is changed.
      * Allows position to be set to nextPosition when created again,
      * essentially saving the state of the storyFragment.
+     *
      * @param outState Bundle used to store nextPosition for later use
      */
     public void savePositionState(Bundle outState) {
-        outState.putString("savedPosition", nextPosition);
+        outState.putString("savedPosition", savedPosition);
     }
 }
