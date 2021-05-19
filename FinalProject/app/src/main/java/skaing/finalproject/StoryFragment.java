@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -30,9 +31,10 @@ public class StoryFragment extends Fragment {
     private static String savedPosition;
     private static String reqItem1, reqItem2, reqItem3, reqItem4, noItemPosition1, noItemPosition2,
             noItemPosition3, noItemPosition4;
+    private playerDeath listener;
 
     public interface playerDeath {
-        public void getJournalText();
+        public void prepRestart();
     }
 
     /**
@@ -147,10 +149,14 @@ public class StoryFragment extends Fragment {
 
                             // Only on button 1, this check to see if player died and if the game should restart
                             if (btnChoice1.getText().equals("GAME OVER")) {
+                                try {
+                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 savedPosition = "positionCell";
-                                //GameActivity.gameOver(getActivity());
-
-                                getActivity().finish();
+                                listener.prepRestart();
+                                //getActivity().finish();
                             } else {
                                 // If player has the required item, remove item from inventory and set positions
                                 // Has the same function if there is no required item
@@ -359,8 +365,6 @@ public class StoryFragment extends Fragment {
             btnChoice2.setTransformationMethod(null);
             btnChoice3.setTransformationMethod(null);
             btnChoice4.setTransformationMethod(null);
-
-            // getActivity() is a context
         }
     }
 
@@ -382,10 +386,20 @@ public class StoryFragment extends Fragment {
         noItemPosition4 = "";
     }
 
-    public void resetGame() {
-        savedPosition = "positionCell";
-        GameActivity.clearInventory();
-        getActivity().finish();
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof playerDeath) {
+            listener = (playerDeath) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement playerDeath");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
     }
 
     /**

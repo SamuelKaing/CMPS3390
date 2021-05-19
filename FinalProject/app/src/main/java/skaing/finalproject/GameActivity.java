@@ -22,11 +22,12 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements StoryFragment.playerDeath {
     public static Fragment storyFragment;
     public static LinkedList<String> inventory = new LinkedList<String>();
     private static final String FILE_NAME = "journal.txt";
     private TextView tvNewGraveyard;
+    private JournalFragment journalFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class GameActivity extends AppCompatActivity {
 
         // Creates new fragments of each fragment class
         Fragment mapFragment = new MapFragment();
-        Fragment journalFragment = new JournalFragment();
+        journalFragment = new JournalFragment();
         Fragment graveyardFragment = new GraveyardFragment();
         storyFragment = new StoryFragment();
 
@@ -115,7 +116,6 @@ public class GameActivity extends AppCompatActivity {
         return itemFound;
     }
 
-    /**TODO: MAKE INVENTORY SYSTEM (REPLACE MAP FRAGMENT)**/
     public static void addToInventory(String item) {
         inventory.add(item);
     }
@@ -159,11 +159,11 @@ public class GameActivity extends AppCompatActivity {
 
     /**
      * This will read String FILE_NAME text file to display on Journal Fragment
-     * @param journalText TextView that will be added to as file is read
      * @param context Context used to open the file
      */
-    public static void readFile(TextView journalText, Context context) {
+    public static String readFile(Context context) {
         FileInputStream fis = null;
+        String readText = null;
 
         try {
             fis = context.openFileInput(FILE_NAME);
@@ -176,7 +176,7 @@ public class GameActivity extends AppCompatActivity {
                 sb.append(text).append("\n");
             }
 
-            journalText.setText(sb.toString());
+            readText = sb.toString();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -189,17 +189,19 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         }
+
+        return readText;
     }
 
     /**
      * This will clear String FILE_NAME text file when game is started
      */
-    private static void clearJournalText(Context context) {
+    private  void clearJournalText(Context context) {
         String empty = "";
         FileOutputStream fos = null;
 
         try {
-            fos = context.openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
             fos.write(empty.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -224,9 +226,18 @@ public class GameActivity extends AppCompatActivity {
         clearInventory();
     }
 
+    @Override
+    public void prepRestart() {
 
-    private void sendToGraveyard() {
-        // do something
+        // Get journal text and store
+        String storedText = readFile(this);
+
+        // Clear journal text
+        clearJournalText(this);
+
+        // Clear player inventory
+        clearInventory();
+
     }
 
 }

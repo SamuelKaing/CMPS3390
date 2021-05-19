@@ -48,7 +48,7 @@ public class JournalFragment extends Fragment {
             }
         });
 
-        GameActivity.readFile(journalText, getActivity());
+        journalText.setText(GameActivity.readFile(getActivity()));
 
         savedJournal = journalText.toString();
 
