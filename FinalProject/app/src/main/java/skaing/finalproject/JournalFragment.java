@@ -4,10 +4,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.FileInputStream;
@@ -16,6 +18,7 @@ public class JournalFragment extends Fragment {
     private View view;
     private ImageButton btnBack;
     private TextView journalText;
+    private ScrollView svJournal;
     private Bundle savedState = null;
     private String savedJournal;
 
@@ -25,6 +28,7 @@ public class JournalFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_journal, container, false);
         journalText = view.findViewById(R.id.tvJournal);
+        svJournal = view.findViewById(R.id.svJournal);
 
         if(savedState != null) {
             journalText.setText(savedState.getString("savedJournal"));
@@ -45,6 +49,7 @@ public class JournalFragment extends Fragment {
         });
 
         GameActivity.readFile(journalText, getActivity());
+
         savedJournal = journalText.toString();
 
         return view;

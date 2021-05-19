@@ -11,7 +11,7 @@
         android:id="@+id/flFragment"
         android:name="skaing.finalproject.StoryFragment"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="680dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
     <LinearLayout
         android:id="@+id/llNavbar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/flFragment"
         app:layout_constraintEnd_toEndOf="parent"

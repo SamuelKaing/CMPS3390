@@ -1,5 +1,6 @@
 package skaing.finalproject;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 
@@ -140,33 +141,52 @@ public class StoryFragment extends Fragment {
                         public void onClick(View v) {
                             String positionNext;
 
-                            // If player has the required item, remove item from inventory and set positions
-                            // Has the same function if there is no required item
-                            // Function getJSON() is recalled here
-                            if (GameActivity.checkInventory(reqItem1) || reqItem1.equals("")) {
-                                try {
-                                    if(!reqItem1.equals("")) {
-                                        GameActivity.removeFromInventory(reqItem1);
+                            // Only on button 1, this check to see if player died and if the game should restart
+                            if (btnChoice1.getText().equals("Wake up")) {
+                                savedPosition = "positionCell";
+                                //GameActivity.gameOver(getActivity());
+                                getActivity().finish();
+                            } else {
+                                // If player has the required item, remove item from inventory and set positions
+                                // Has the same function if there is no required item
+                                // Function getJSON() is recalled here
+                                if (GameActivity.checkInventory(reqItem1) || reqItem1.equals("")) {
+                                    try {
+                                        // Removes required item once used
+                                        if (!reqItem1.equals("")) {
+                                            GameActivity.removeFromInventory(reqItem1);
+                                        }
+
+                                        // Adds item to inventory if there is a pick-up
+                                        if (!choiceInfo.getString("pickUp").equals("")) {
+                                            GameActivity.addToInventory(choiceInfo.getString("pickUp"));
+                                        }
+
+                                        // Sets next position and saves it to savedPosition
+                                        positionNext = choiceInfo.getString("nextPosition");
+                                        savedPosition = positionNext;
+
+                                        // Saves text to journal when choice is selected
+                                        GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                        GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
+
+                                        // Recalls getJSON() to next position when button is clicked
+                                        getJSON(positionNext);
+                                    } catch (JSONException | IOException e) {
+                                        e.printStackTrace();
                                     }
-                                    positionNext = choiceInfo.getString("nextPosition");
-                                    savedPosition = positionNext;
-                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
-                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
-                                    getJSON(positionNext);
-                                } catch (JSONException | IOException e) {
-                                    e.printStackTrace();
                                 }
-                            }
-                            // Else change positionNext to noItemPosition and recall getJSON() with that
-                            else {
-                                positionNext = noItemPosition1;
-                                savedPosition = positionNext;
-                                try {
-                                    GameActivity.saveToJournal(info.getString("text"), getActivity());
-                                    GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
-                                    getJSON(positionNext);
-                                } catch (IOException | JSONException e) {
-                                    e.printStackTrace();
+                                // Else change positionNext to noItemPosition and recall getJSON() with that
+                                else {
+                                    positionNext = noItemPosition1;
+                                    savedPosition = positionNext;
+                                    try {
+                                        GameActivity.saveToJournal(info.getString("text"), getActivity());
+                                        GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
+                                        getJSON(positionNext);
+                                    } catch (IOException | JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         }
@@ -197,6 +217,9 @@ public class StoryFragment extends Fragment {
                                 try {
                                     if(!reqItem2.equals("")) {
                                         GameActivity.removeFromInventory(reqItem2);
+                                    }
+                                    if(!choiceInfo.getString("pickUp").equals("")) {
+                                        GameActivity.addToInventory(choiceInfo.getString("pickUp"));
                                     }
                                     GameActivity.saveToJournal(info.getString("text"), getActivity());
                                     GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
@@ -247,6 +270,9 @@ public class StoryFragment extends Fragment {
                                     if(!reqItem3.equals("")) {
                                         GameActivity.removeFromInventory(reqItem3);
                                     }
+                                    if(!choiceInfo.getString("pickUp").equals("")) {
+                                        GameActivity.addToInventory(choiceInfo.getString("pickUp"));
+                                    }
                                     GameActivity.saveToJournal(info.getString("text"), getActivity());
                                     GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
                                     positionNext = choiceInfo.getString("nextPosition");
@@ -295,6 +321,9 @@ public class StoryFragment extends Fragment {
                                 try {
                                     if(!reqItem4.equals("")) {
                                         GameActivity.removeFromInventory(reqItem4);
+                                    }
+                                    if(!choiceInfo.getString("pickUp").equals("")) {
+                                        GameActivity.addToInventory(choiceInfo.getString("pickUp"));
                                     }
                                     GameActivity.saveToJournal(info.getString("text"), getActivity());
                                     GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
@@ -346,6 +375,12 @@ public class StoryFragment extends Fragment {
         noItemPosition2 = "";
         noItemPosition3 = "";
         noItemPosition4 = "";
+    }
+
+    public void resetGame() {
+        savedPosition = "positionCell";
+        GameActivity.clearInventory();
+        getActivity().finish();
     }
 
     /**

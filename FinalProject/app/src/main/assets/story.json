@@ -4,11 +4,13 @@
     "choice1": [{
       "btnText": "Look for an exit",
       "nextPosition": "positionCellDoor",
+      "pickUp": "",
       "required": []
     }],
     "choice2": [{
       "btnText": "Observe surrounding",
       "nextPosition": "positionBrick",
+      "pickUp": "",
       "required": []
     }],
     "choice3": [],
@@ -21,11 +23,13 @@
     "choice1": [{
       "btnText": "Go Back",
       "nextPosition": "positionCell",
+      "pickUp": "",
       "required": []
     }],
     "choice2": [{
-      "btnText": "Take the brick",
+      "btnText": "Take a brick",
       "nextPosition": "positionCell",
+      "pickUp": "brick",
       "required": []
     }],
     "choice3": [],
@@ -38,11 +42,13 @@
     "choice1": [{
       "btnText": "Go back",
       "nextPosition": "positionCell",
+      "pickUp": "",
       "required": []
     }],
     "choice2": [{
       "btnText": "Break the lock",
       "nextPosition": "positionHall",
+      "pickUp": "",
       "required": [{
         "item": "brick",
         "nextPosition": "positionNoBrick"
@@ -57,6 +63,7 @@
     "choice1": [{
       "btnText": "Try something else",
       "nextPosition": "positionCellDoor",
+      "pickUp": "",
       "required": []
     }],
     "choice2": [],
@@ -66,19 +73,52 @@
 
 
   "positionHall": [{
-    "text": "You enter a dilapidated hallway. Light shines from a large hole in the wall.",
+    "text": "The lock and brick shatter on impact. The gate opens to a dilapidated hallway. Light shines from a large hole in the wall.",
     "choice1": [{
       "btnText": "Walk to the end of the hall",
       "nextPosition": "positionEndHall",
+      "pickUp": "",
       "required": []
     }],
     "choice2": [{
       "btnText": "Approach the hole in the wall.",
       "nextPosition": "positionHole",
+      "pickUp": "",
       "required": []
     }],
     "choice3": [],
     "choice4": []
-}]
+}],
+
+  "positionHole": [{
+    "text": "The wind blows on your face and the sun warms you as you stand in the opening. Below you is a sea with waves crashing along the cliff you are on.",
+    "choice1": [{
+      "btnText": "Step back into the hall",
+      "nextPosition": "positionHall",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Take a leap of faith",
+      "nextPosition": "positionCliffDeath",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionCliffDeath": [{
+    "text": "Falling from the cliff, you think about how bad of a decision this was. You hit the water at such a high velocity that you die on impact.",
+    "choice1": [{
+      "btnText": "Wake up",
+      "nextPosition": "RESTART",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }]
 
 }

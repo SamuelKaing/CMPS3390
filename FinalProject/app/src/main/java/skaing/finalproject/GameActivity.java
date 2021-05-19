@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,9 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +35,7 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        clearJournalText();
+        clearJournalText(this);
 
         // Creates new fragments of each fragment class
         Fragment mapFragment = new MapFragment();
@@ -94,6 +93,10 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    public static LinkedList<String> getInventory() {
+        return inventory;
+    }
+
     /**
      * Checks inventory for item when called
      * @param item String that is being check for in Linked List
@@ -122,6 +125,10 @@ public class GameActivity extends AppCompatActivity {
      */
     public static void removeFromInventory(String item) {
         inventory.remove(item);
+    }
+
+    public static void clearInventory() {
+        inventory.clear();
     }
 
     /**
@@ -186,12 +193,12 @@ public class GameActivity extends AppCompatActivity {
     /**
      * This will clear String FILE_NAME text file when game is started
      */
-    private void clearJournalText() {
+    private static void clearJournalText(Context context) {
         String empty = "";
         FileOutputStream fos = null;
 
         try {
-            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos = context.openFileOutput(FILE_NAME, MODE_PRIVATE);
             fos.write(empty.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -206,10 +213,8 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public static void gameOver() {
-
-        // Clear inventory
-        inventory.clear();
+    private void sendToGraveyard() {
+        // do something
     }
 
 }
