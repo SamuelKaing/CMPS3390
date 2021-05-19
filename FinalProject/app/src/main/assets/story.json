@@ -111,7 +111,7 @@
   "positionCliffDeath": [{
     "text": "Falling from the cliff, you think about how bad of a decision this was. You hit the water at such a high velocity that you die on impact.",
     "choice1": [{
-      "btnText": "Wake up",
+      "btnText": "GAME OVER",
       "nextPosition": "RESTART",
       "pickUp": "",
       "required": []

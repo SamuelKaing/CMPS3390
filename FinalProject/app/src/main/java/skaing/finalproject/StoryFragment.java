@@ -29,14 +29,18 @@ public class StoryFragment extends Fragment {
     private static Bundle savedState = null;
     private static String savedPosition;
     private static String reqItem1, reqItem2, reqItem3, reqItem4, noItemPosition1, noItemPosition2,
-    noItemPosition3, noItemPosition4;
+            noItemPosition3, noItemPosition4;
+
+    public interface playerDeath {
+        public void getJournalText();
+    }
 
     /**
      * Override onCreateView() method.
      * Sets view, text, buttons, and calls getJSON() to begin story.
      *
-     * @param inflater LayoutInflater used to inflate view
-     * @param container ViewGroup (not used)
+     * @param inflater           LayoutInflater used to inflate view
+     * @param container          ViewGroup (not used)
      * @param savedInstanceState Bundle. (onSaveInstanceState method not called for some reason.
      *                           Had to manually create alternate method (savedPositionState()).
      * @return View which is the storyFragment's view
@@ -142,9 +146,10 @@ public class StoryFragment extends Fragment {
                             String positionNext;
 
                             // Only on button 1, this check to see if player died and if the game should restart
-                            if (btnChoice1.getText().equals("Wake up")) {
+                            if (btnChoice1.getText().equals("GAME OVER")) {
                                 savedPosition = "positionCell";
                                 //GameActivity.gameOver(getActivity());
+
                                 getActivity().finish();
                             } else {
                                 // If player has the required item, remove item from inventory and set positions
@@ -215,10 +220,10 @@ public class StoryFragment extends Fragment {
                             String positionNext;
                             if (GameActivity.checkInventory(reqItem2) || reqItem2.equals("")) {
                                 try {
-                                    if(!reqItem2.equals("")) {
+                                    if (!reqItem2.equals("")) {
                                         GameActivity.removeFromInventory(reqItem2);
                                     }
-                                    if(!choiceInfo.getString("pickUp").equals("")) {
+                                    if (!choiceInfo.getString("pickUp").equals("")) {
                                         GameActivity.addToInventory(choiceInfo.getString("pickUp"));
                                     }
                                     GameActivity.saveToJournal(info.getString("text"), getActivity());
@@ -267,10 +272,10 @@ public class StoryFragment extends Fragment {
                             String positionNext;
                             if (GameActivity.checkInventory(reqItem3) || reqItem3.equals("")) {
                                 try {
-                                    if(!reqItem3.equals("")) {
+                                    if (!reqItem3.equals("")) {
                                         GameActivity.removeFromInventory(reqItem3);
                                     }
-                                    if(!choiceInfo.getString("pickUp").equals("")) {
+                                    if (!choiceInfo.getString("pickUp").equals("")) {
                                         GameActivity.addToInventory(choiceInfo.getString("pickUp"));
                                     }
                                     GameActivity.saveToJournal(info.getString("text"), getActivity());
@@ -319,10 +324,10 @@ public class StoryFragment extends Fragment {
                             String positionNext;
                             if (GameActivity.checkInventory(reqItem4) || reqItem4.equals("")) {
                                 try {
-                                    if(!reqItem4.equals("")) {
+                                    if (!reqItem4.equals("")) {
                                         GameActivity.removeFromInventory(reqItem4);
                                     }
-                                    if(!choiceInfo.getString("pickUp").equals("")) {
+                                    if (!choiceInfo.getString("pickUp").equals("")) {
                                         GameActivity.addToInventory(choiceInfo.getString("pickUp"));
                                     }
                                     GameActivity.saveToJournal(info.getString("text"), getActivity());

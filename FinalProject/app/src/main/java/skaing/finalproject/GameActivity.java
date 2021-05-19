@@ -26,6 +26,7 @@ public class GameActivity extends AppCompatActivity {
     public static Fragment storyFragment;
     public static LinkedList<String> inventory = new LinkedList<String>();
     private static final String FILE_NAME = "journal.txt";
+    private TextView tvNewGraveyard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +213,17 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * Overwritten onStop() to act as a GAME OVER
+     * Will empty players inventory. Journal will empty automatically
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        clearInventory();
+    }
+
 
     private void sendToGraveyard() {
         // do something
