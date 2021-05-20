@@ -14,11 +14,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class GameActivity extends AppCompatActivity implements StoryFragment.playerDeath {
     public static Fragment storyFragment, graveyardFragment;
-    public static LinkedList<String> inventory = new LinkedList<>();
+    public static ArrayList<String> inventory = new ArrayList<>();
     private JournalFragment journalFragment;
     private final accessGraveyard listener = new GraveyardFragment();
     private final static String FILE_NAME = "journal.txt";
@@ -98,16 +98,16 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
 
     /**
      * Retrieves inventory list
-     * @return LinkedList which is the inventory list
+     * @return ArrayList which is the inventory list
      */
-    public static LinkedList<String> getInventory() {
+    public static ArrayList<String> getInventory() {
         return inventory;
     }
 
     /**
      * Checks inventory for item when called
      *
-     * @param item String that is being check for in Linked List
+     * @param item String that is being check for in Array List
      * @return boolean that is based on if the item is found or not
      */
     public static boolean checkInventory(String item) {
@@ -122,6 +122,10 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         return itemFound;
     }
 
+    public static void setInventory(ArrayList<String> savedInventory) {
+        inventory = savedInventory;
+    }
+
     /**
      * Adds item to inventory
      * @param item String that is the item being added
@@ -131,7 +135,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
     }
 
     /**
-     * Removes item from inventory Linked List
+     * Removes item from inventory Array List
      *
      * @param item String that is being removed from list
      */

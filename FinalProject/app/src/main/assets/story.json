@@ -1,6 +1,6 @@
 {
   "positionCell": [{
-    "text": "Your eyes open to find a dark room.",
+    "text": "Your eyes open to find a dark room. This room feels familiar.",
     "choice1": [{
       "btnText": "Look for an exit",
       "nextPosition": "positionCellDoor",
@@ -119,8 +119,214 @@
     "choice2": [],
     "choice3": [],
     "choice4": []
+  }],
+
+  "positionEndHall": [{
+    "text": "At the end of the hall you find a small room. It's dark, a torch attached to the wall lets you see only a little.",
+    "choice1": [{
+      "btnText": "Take the torch",
+      "nextPosition": "positionEndHallTorch",
+      "pickUp": "torch",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Walk into the room.",
+      "nextPosition": "positionSmallRoom",
+      "pickUp": "",
+      "required": [{
+        "item": "torch",
+        "nextPosition": "positionTooDark"
+      }]
+    }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionEndHallTorch": [{
+    "text": "Standing at the end of the hall, the room is barely visible.",
+    "choice1": [{
+      "btnText": "Walk into the room",
+      "nextPosition": "positionSmallRoom",
+      "pickUp": "",
+      "required": [{
+        "item": "torch",
+        "nextPosition": "positionTooDark"
+      }]
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionTooDark": [{
+    "text": "You can't see a thing. It might be dangerous walking in the dark like this.",
+    "choice1": [{
+      "btnText": "Go back to the entrance",
+      "nextPosition": "positionEndHall",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionSmallRoom": [{
+    "text": "The torch brightens the room. To your left there is a large iron door with a lock and a stairway going up. To your left there is a staircase going down.",
+    "choice1": [{
+      "btnText": "Go to the iron door",
+      "nextPosition": "positionIronDoor",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Go to the staircase going up",
+      "nextPosition": "positionStairwayUp",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice3": [{
+      "btnText": "Go to the staircase going down",
+      "nextPosition": "positionStairwayDown",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice4": []
+  }],
+
+  "positionIronDoor": [{
+    "text": "The iron door has a small window on it. You see a stone bridge leading to the mainland.",
+    "choice1": [{
+      "btnText": "Go back",
+      "nextPosition": "positionSmallRoom",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Open the door",
+      "nextPosition": "positionBridge",
+      "pickUp": "",
+      "required": [{
+        "item": "Iron Door Key",
+        "nextPosition": "positionNoKey"
+      }]
+    }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionNoKey": [{
+    "text": "The lock on the door won't budge. This one needs a key.",
+    "choice1": [{
+      "btnText": "Try something else",
+      "nextPosition": "positionIronDoor",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionStairwayUp": [{
+    "text": "There's a small window giving light at the top of the staircase.",
+    "choice1": [{
+      "btnText": "Go back",
+      "nextPosition": "positionSmallRoom",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Ascend the staircase",
+      "nextPosition": "positionStairwayUpTop",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionStairwayDown": [{
+    "text": "Walking to the stairway, you notice a pool of blood at its entrance.",
+    "choice1": [{
+      "btnText": "Go back",
+      "nextPosition": "positionSmallRoom",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Go down",
+      "nextPosition": "positionStairwayDownWarning",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionStairwayDownWarning": [{
+    "text": "As you descend, chills run down your body.  Whispers prophesy of the end.",
+    "choice1": [{
+      "btnText": "Go Back",
+      "nextPosition": "positionSmallRoom",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Keep going",
+      "nextPosition": "positionStairwayDownButton",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionStairwayDownButton": [{
+    "text": "At the bottom of the staircase, an iron door lays on the ground. The air is heavy. The smell is rotten.",
+    "choice1": [{
+      "btnText": "GO BACK",
+      "nextPosition": "positionSmallRoom",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Walk past the torn down door",
+      "nextPosition": "positionMonsterDeath",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionMonsterDeath": [{
+    "text": "As you creep forward in the dark, something groans and writhes. The creature comes in view.  Its hundreds of eyes lock with you. Your torch dims and goes out, foreshadowing your demise.",
+    "choice1": [{
+      "btnText": "GAME OVER",
+      "nextPosition": "RESTART",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionTemplate": [{
+    "text": "",
+    "choice1": [{
+      "btnText": "",
+      "nextPosition": "",
+      "pickUp": "",
+      "required": [{
+        "item": "",
+        "nextPosition": ""
+      }]
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
   }]
-
-
 
 }

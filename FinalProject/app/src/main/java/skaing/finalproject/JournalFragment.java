@@ -4,15 +4,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import java.io.FileInputStream;
 
 public class JournalFragment extends Fragment {
     private View view;
@@ -58,13 +55,13 @@ public class JournalFragment extends Fragment {
     /**
      * Override onStop() method.
      * Instantiates savedState as a new bundle to be used
-     * in savePositionState() method.
+     * in saveJournalState() method.
      */
     @Override
     public void onStop() {
         super.onStop();
         savedState = new Bundle();
-        savePositionState(savedState);
+        saveJournalState(savedState);
     }
 
     /**
@@ -74,7 +71,7 @@ public class JournalFragment extends Fragment {
      *
      * @param outState Bundle used to store nextPosition for later use
      */
-    public void savePositionState(Bundle outState) {
+    public void saveJournalState(Bundle outState) {
         outState.putString("savedJournal", savedJournal);
     }
 
