@@ -14,14 +14,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class GameActivity extends AppCompatActivity implements StoryFragment.playerDeath {
     public static Fragment storyFragment, graveyardFragment;
-    public static LinkedList<String> inventory = new LinkedList<String>();
+    public static LinkedList<String> inventory = new LinkedList<>();
     private JournalFragment journalFragment;
-    private accessGraveyard listener = new GraveyardFragment();
+    private final accessGraveyard listener = new GraveyardFragment();
     private final static String FILE_NAME = "journal.txt";
 
     /**
@@ -39,17 +38,17 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        clearJournalText(this);
+        clearJournalText();
 
         // Creates new fragments of each fragment class
-        Fragment mapFragment = new MapFragment();
+        Fragment inventoryFragment = new InventoryFragment();
         journalFragment = new JournalFragment();
         graveyardFragment = new GraveyardFragment();
         storyFragment = new StoryFragment();
 
         // Sets UI buttons
         ImageButton btnJournal = findViewById(R.id.btnJournal);
-        ImageButton btnMap = findViewById(R.id.btnMap);
+        ImageButton btnInventory = findViewById(R.id.btnInventory);
         ImageButton btnGraveyard = findViewById(R.id.btnGraveyard);
 
         // Sets default fragment as Story Fragment
@@ -60,13 +59,13 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
                     .commit();
         }
 
-        // Switches Fragment when Map Button is clicked
-        btnMap.setOnClickListener(new View.OnClickListener() {
+        // Switches Fragment when Inventory Button is clicked
+        btnInventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.flFragment, mapFragment)
+                        .replace(R.id.flFragment, inventoryFragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -97,6 +96,10 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         });
     }
 
+    /**
+     * Retrieves inventory list
+     * @return LinkedList which is the inventory list
+     */
     public static LinkedList<String> getInventory() {
         return inventory;
     }
@@ -109,16 +112,20 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
      */
     public static boolean checkInventory(String item) {
         boolean itemFound = false;
-        Iterator<String> iterator = inventory.iterator();
 
-        while (iterator.hasNext()) {
-            if (iterator.next().equals(item)) {
+        for (String s : inventory) {
+            if (s.equals(item)) {
                 itemFound = true;
+                break;
             }
         }
         return itemFound;
     }
 
+    /**
+     * Adds item to inventory
+     * @param item String that is the item being added
+     */
     public static void addToInventory(String item) {
         inventory.add(item);
     }
@@ -132,6 +139,9 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         inventory.remove(item);
     }
 
+    /**
+     * Clears player inventory
+     */
     public static void clearInventory() {
         inventory.clear();
     }
@@ -200,7 +210,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
     /**
      * This will clear String FILE_NAME text file when game is started
      */
-    private void clearJournalText(Context context) {
+    private void clearJournalText() {
         String empty = "";
         FileOutputStream fos = null;
 
@@ -230,22 +240,24 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         clearInventory();
     }
 
+    /**
+     * Is called when player makes a choice that leads to a game over
+     * Saves Journal to String storedText, Clears information in inventory and journal
+     * Places storedText in Graveyard
+     */
     @Override
     public void prepRestart() {
-
         // Get journal text and store
         String storedText = readFile(this);
 
         // Clear journal text
-        clearJournalText(this);
+        clearJournalText();
 
         // Clear player inventory
         clearInventory();
 
         // Calls method in GraveyardFragment class to store string in JSON file
         listener.addToGraveyardJSON(storedText, this);
-
-
     }
 
 }

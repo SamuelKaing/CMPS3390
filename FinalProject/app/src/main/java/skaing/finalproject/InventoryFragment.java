@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-public class MapFragment extends Fragment {
+public class InventoryFragment extends Fragment {
     private View view;
     private ImageButton btnBack;
     private ListView inventoryList;
@@ -20,10 +20,10 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_map, container, false);
+        view = inflater.inflate(R.layout.fragment_inventory, container, false);
 
         inventoryList = view.findViewById(R.id.lvInventory);
-        btnBack = view.findViewById(R.id.btnBackMap);
+        btnBack = view.findViewById(R.id.btnBackInventory);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,6 +35,7 @@ public class MapFragment extends Fragment {
             }
         });
 
+        // Creates adapter to display list
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, GameActivity.getInventory());
 

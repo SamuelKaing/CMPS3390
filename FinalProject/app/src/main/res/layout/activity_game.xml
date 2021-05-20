@@ -29,12 +29,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/btnMap"
+            android:id="@+id/btnInventory"
             android:layout_width="140dp"
             android:layout_height="45dp"
             android:layout_weight="1"
-            android:contentDescription="@string/map_button"
-            android:src="@mipmap/map" />
+            android:contentDescription="@string/inventory_button"
+            android:src="@mipmap/supplies" />
 
         <ImageButton
             android:id="@+id/btnJournal"
