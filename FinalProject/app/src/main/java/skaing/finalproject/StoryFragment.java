@@ -21,7 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-
+/**
+ * This fragment class is the main fragment. It will handle game progression and
+ * update the screen as decision are made.
+ */
 public class StoryFragment extends Fragment {
     private View view;
     private TextView text;
@@ -91,6 +94,7 @@ public class StoryFragment extends Fragment {
      * Parses data from story.json to set text and button text.
      * Sets savedPosition, which is used to save the state.
      * Recalls itself when button is pressed to change position.
+     * Begins the process of restarting the game if player dies.
      *
      * @param position String that determines the next position of the player
      * @throws IOException   for when getString("") is called
@@ -151,6 +155,9 @@ public class StoryFragment extends Fragment {
                             String positionNext;
 
                             // Only on button 1, this check to see if player died and if the game should restart
+                            // It first makes sure to store the last text onscreen to journal
+                            // Then it resets the savedPosition to the beginning
+                            // Last it calls prepRestart(), which is located in GameActivity.
                             if (btnChoice1.getText().equals("GAME OVER")) {
                                 try {
                                     GameActivity.saveToJournal(info.getString("text"), getActivity());
@@ -159,7 +166,6 @@ public class StoryFragment extends Fragment {
                                 }
                                 savedPosition = "positionCell";
                                 listener.prepRestart();
-                                //getActivity().finish();
                             } else {
                                 // If player has the required item, remove item from inventory and set positions
                                 // Has the same function if there is no required item
