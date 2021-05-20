@@ -166,6 +166,11 @@ public class StoryFragment extends Fragment {
                                 }
                                 savedPosition = "positionCell";
                                 listener.prepRestart();
+                                try {
+                                    getJSON(savedPosition);
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
                             } else {
                                 // If player has the required item, remove item from inventory and set positions
                                 // Has the same function if there is no required item

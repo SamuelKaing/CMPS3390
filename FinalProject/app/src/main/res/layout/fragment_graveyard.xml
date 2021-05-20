@@ -30,49 +30,35 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-            <Button
-                android:id="@+id/btnClearGraveyard"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="61dp"
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="serif-monospace"
                 android:gravity="center"
+                android:paddingTop="15dp"
                 android:paddingEnd="65dp"
-                android:text="@string/clear_graveyard"
+                android:paddingBottom="10dp"
+                android:text="@string/past_life"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                app:backgroundTint="@android:color/transparent" />
+                android:textSize="20sp" />
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.ms.square.android.expandabletextview.ExpandableTextView
-                    android:id="@+id/expandable_text_view"
+                <TextView
+                    android:id="@+id/tvGraveyard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:animDuration="100"
-                    app:maxCollapsedLines="4">
+                    android:fontFamily="serif-monospace"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/expandable_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:fontFamily="serif-monospace"
-                        android:textSize="20sp" />
 
-                    <ImageButton
-                        android:id="@+id/expand_collapse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|bottom"
-                        android:background="@android:color/transparent" />
-
-                </com.ms.square.android.expandabletextview.ExpandableTextView>
             </ScrollView>
 
 

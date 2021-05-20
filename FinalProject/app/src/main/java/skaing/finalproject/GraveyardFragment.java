@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,7 +27,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This fragment class is mainly called when selected or when the player dies.
@@ -37,9 +40,8 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
     private View view;
     private ImageButton btnBack;
     private Button btnClearGraveyard;
-    private ExpandableTextView etvGraveStone;
-    private TextView tvGraveStoneText;
-    private ImageButton ibCollapse;
+    private TextView tvGraveyard;
+    private TextView tvTitle;
     private final static String FILE_NAME = "graveyard.json";
 
     @Override
@@ -48,14 +50,10 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_graveyard, container, false);
 
-        btnClearGraveyard = view.findViewById(R.id.btnClearGraveyard);
-        btnClearGraveyard.setPaintFlags(btnClearGraveyard.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        tvTitle = view.findViewById(R.id.tvTitle);
+        tvTitle.setPaintFlags(tvTitle.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        etvGraveStone = view.findViewById(R.id.expandable_text_view);
-
-        etvGraveStone.setText("steinm veon ovne i ivne o iesnv o isne voisenv oisen vosien vseivn seinvs eivno sienvosien osienv" +
-                "dfldkf alskdf lskdjf l;aksdjf l;kdjf;lskdjfl;ksdj flkdj flaskdjf lkdjf l;skdfj lskdfj ;alskdjf lksdjf l;ksdjf lsdkjf lskdjf lsakdjf sadkfj sa;dl" +
-                "asldkjf laskdfj ;aslkdfj a;lsdkjf ;laskdjf l;askdjf l;skadjf lksdjf sdkjf ;lasdkfjls;akdf END");
+        tvGraveyard = view.findViewById(R.id.tvGraveyard);
 
 
         btnBack = view.findViewById(R.id.btnBackGraveyard);
@@ -70,8 +68,11 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
             }
         });
 
-
-        //etvGraveStone.setText(GameActivity.readFile(getActivity(), "graveyard.json"));
+        try {
+            readGraveyardJSON("tombstone", getActivity());
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
 
         return view;
     }
@@ -80,11 +81,15 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
      * Will write text from journal fragment (journalText) to JSON file when player dies,
      * adding it to the graveyard.
      * @param journalText String which is the text from the journalFragment
+     * @param context Context used to open the file
      */
     public void addToGraveyardJSON(String journalText, Context context) {
+        JSONArray jsonArray = new JSONArray();
         JSONObject journal = new JSONObject();
+        int t = 0;
         try {
             journal.put("tombstone", journalText);
+            jsonArray.put(journal);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -112,11 +117,9 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
     /**
      * Reads graveyard.json file and adds it to the ExpandableListView (Graveyard)
      */
-    private void readGraveyardJSON(Context context) {
+    private void readGraveyardJSON(String tombstone, Context context) throws JSONException, IOException {
         FileInputStream fis = null;
-        String readText = null;
 
-        try {
             fis = context.openFileInput(FILE_NAME);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
@@ -127,12 +130,11 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
                 sb.append(text).append("\n");
             }
 
-            readText = sb.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            JSONObject jsonObject = new JSONObject(sb.toString());
+            Log.d("OBJECT: ", jsonObject.toString());
+
+            tvGraveyard.setText(jsonObject.getString("tombstone"));
+
     }
 
     /**

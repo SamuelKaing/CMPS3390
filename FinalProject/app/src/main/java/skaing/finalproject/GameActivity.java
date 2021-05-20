@@ -244,6 +244,8 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
 
         // Calls method in GraveyardFragment class to store string in JSON file
         listener.addToGraveyardJSON(storedText, this);
+
+
     }
 
 }

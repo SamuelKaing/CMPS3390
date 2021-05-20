@@ -5,5 +5,5 @@
     <string name="journal_button">Journal Button</string>
     <string name="graveyard_button">Graveyard Button</string>
     <string name="back_button">Back Button</string>
-    <string name="clear_graveyard">Clear Graveyard</string>
+    <string name="past_life">Past Life</string>
 </resources>
