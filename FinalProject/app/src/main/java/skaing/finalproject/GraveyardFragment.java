@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-public class GraveyardFragment extends Fragment {
+public class GraveyardFragment extends Fragment implements GameActivity.accessGraveyard {
     private View view;
     private ImageButton btnBack;
 
@@ -31,6 +31,20 @@ public class GraveyardFragment extends Fragment {
             }
         });
 
+        readGraveyardJSON();
+
         return view;
     }
+
+    /**
+     * Will write journalText to JSON file when player dies, adding it to the graveyard.
+     * @param journalText String which is the text from the journalFragment
+     */
+    public void addToGraveyardJSON(String journalText) {
+
+    }
+
+    private void readGraveyardJSON() {
+    }
+
 }

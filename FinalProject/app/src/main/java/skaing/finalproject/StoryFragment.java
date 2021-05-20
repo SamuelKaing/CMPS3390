@@ -33,8 +33,11 @@ public class StoryFragment extends Fragment {
             noItemPosition3, noItemPosition4;
     private playerDeath listener;
 
+    /**
+     * Interface that will allow communication between StoryFragment class and GameActivity
+     */
     public interface playerDeath {
-        public void prepRestart();
+        void prepRestart();
     }
 
     /**

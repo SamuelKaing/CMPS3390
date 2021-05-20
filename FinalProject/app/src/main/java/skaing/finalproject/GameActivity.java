@@ -1,33 +1,35 @@
 package skaing.finalproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class GameActivity extends AppCompatActivity implements StoryFragment.playerDeath {
-    public static Fragment storyFragment;
+    public static Fragment storyFragment, graveyardFragment;
     public static LinkedList<String> inventory = new LinkedList<String>();
     private static final String FILE_NAME = "journal.txt";
-    private TextView tvNewGraveyard;
     private JournalFragment journalFragment;
+    private accessGraveyard listener = new GraveyardFragment();
+
+    /**
+     * Interface that will allow communication between GameActivity and GraveyardFragment class
+     */
+    public interface accessGraveyard {
+        void addToGraveyardJSON(String journalText);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         // Creates new fragments of each fragment class
         Fragment mapFragment = new MapFragment();
         journalFragment = new JournalFragment();
-        Fragment graveyardFragment = new GraveyardFragment();
+        graveyardFragment = new GraveyardFragment();
         storyFragment = new StoryFragment();
 
         // Sets UI buttons
@@ -51,7 +53,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         ImageButton btnGraveyard = findViewById(R.id.btnGraveyard);
 
         // Sets default fragment as Story Fragment
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flFragment, storyFragment)
@@ -101,6 +103,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
 
     /**
      * Checks inventory for item when called
+     *
      * @param item String that is being check for in Linked List
      * @return boolean that is based on if the item is found or not
      */
@@ -108,8 +111,8 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         boolean itemFound = false;
         Iterator<String> iterator = inventory.iterator();
 
-        while(iterator.hasNext()) {
-            if(iterator.next().equals(item)) {
+        while (iterator.hasNext()) {
+            if (iterator.next().equals(item)) {
                 itemFound = true;
             }
         }
@@ -122,6 +125,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
 
     /**
      * Removes item from inventory Linked List
+     *
      * @param item String that is being removed from list
      */
     public static void removeFromInventory(String item) {
@@ -134,7 +138,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
 
     /**
      * Saves text and button text once choice is made and adds them to a text file
-     * @param text String that is the text being added to the file
+     * @param text    String that is the text being added to the file
      * @param context Context used to open the file
      */
     public static void saveToJournal(String text, Context context) {
@@ -147,7 +151,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if(fos != null) {
+            if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException e) {
@@ -196,7 +200,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
     /**
      * This will clear String FILE_NAME text file when game is started
      */
-    private  void clearJournalText(Context context) {
+    private void clearJournalText(Context context) {
         String empty = "";
         FileOutputStream fos = null;
 
@@ -238,6 +242,8 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         // Clear player inventory
         clearInventory();
 
+        // Calls method in GraveyardFragment class to store string in JSON file
+        listener.addToGraveyardJSON(storedText);
     }
 
 }
