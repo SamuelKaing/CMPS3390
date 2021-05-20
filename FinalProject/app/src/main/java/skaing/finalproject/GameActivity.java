@@ -20,15 +20,15 @@ import java.util.LinkedList;
 public class GameActivity extends AppCompatActivity implements StoryFragment.playerDeath {
     public static Fragment storyFragment, graveyardFragment;
     public static LinkedList<String> inventory = new LinkedList<String>();
-    private static final String FILE_NAME = "journal.txt";
     private JournalFragment journalFragment;
     private accessGraveyard listener = new GraveyardFragment();
+    private final static String FILE_NAME = "journal.txt";
 
     /**
      * Interface that will allow communication between GameActivity and GraveyardFragment class
      */
     public interface accessGraveyard {
-        void addToGraveyardJSON(String journalText);
+        void addToGraveyardJSON(String journalText, Context context);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         String spacer = "\n\n";
         FileOutputStream fos = null;
         try {
-            fos = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE | Context.MODE_APPEND);
+            fos = context.openFileOutput("journal.txt", Context.MODE_PRIVATE | Context.MODE_APPEND);
             fos.write(text.getBytes());
             fos.write(spacer.getBytes());
         } catch (IOException e) {
@@ -243,7 +243,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         clearInventory();
 
         // Calls method in GraveyardFragment class to store string in JSON file
-        listener.addToGraveyardJSON(storedText);
+        listener.addToGraveyardJSON(storedText, this);
     }
 
 }
