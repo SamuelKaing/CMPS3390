@@ -40,7 +40,7 @@ public class StoryFragment extends Fragment {
      * Interface that will allow communication between StoryFragment class and GameActivity
      */
     public interface playerDeath {
-        void prepRestart();
+        void Restart();
     }
 
     /**
@@ -92,8 +92,8 @@ public class StoryFragment extends Fragment {
 
     /**
      * Parses data from story.json to set text and button text.
-     * Sets savedPosition, which is used to save the state.
-     * Recalls itself when button is pressed to change position.
+     * Sets savedPosition, which is used to save the state when fragment is changed.
+     * Recalls itself when button is pressed to progress story.
      * Begins the process of restarting the game if player dies.
      *
      * @param position String that determines the next position of the player
@@ -101,6 +101,7 @@ public class StoryFragment extends Fragment {
      * @throws JSONException for when getJSON("") is called
      */
     public void getJSON(String position) throws IOException, JSONException {
+        // Resets strings of text, buttons, reqItems, and noItemPositions for recursive calls
         resetStrings();
 
         InputStream inputStream = getActivity().getAssets().open("story.json");
@@ -123,6 +124,7 @@ public class StoryFragment extends Fragment {
             JSONArray choice3 = info.getJSONArray("choice3");
             JSONArray choice4 = info.getJSONArray("choice4");
 
+            // Sets the text of the story fragment
             text.setText(info.getString("text"));
 
             // If statements check to see if there is anything inside choice JSONArrays
@@ -135,7 +137,8 @@ public class StoryFragment extends Fragment {
                     JSONArray requirements = choiceInfo.getJSONArray("required");
 
                     // That's right, another array and for loop to check if there's anything inside requirements JSONArray (i.e reqItem and noItemPosition)
-                    // This is to check if there are any required items for the choice
+                    // This is to check if there are any required items for the choice.
+                    // It will set the position the player will go to next if they do not have the required item in noItemPosition.
                     if (requirements != null && requirements.length() > 0) {
                         for (int iii = 0; iii < requirements.length(); iii++) {
                             JSONObject reqInfo = requirements.getJSONObject(iii);
@@ -157,7 +160,7 @@ public class StoryFragment extends Fragment {
                             // Only on button 1, this check to see if player died and if the game should restart
                             // It first makes sure to store the last text onscreen to journal
                             // Then it resets the savedPosition to the beginning
-                            // Last it calls prepRestart(), which is located in GameActivity.
+                            // Last it calls Restart(), which is located in GameActivity.
                             if (btnChoice1.getText().equals("GAME OVER")) {
                                 try {
                                     GameActivity.saveToJournal(info.getString("text"), getActivity());
@@ -165,13 +168,14 @@ public class StoryFragment extends Fragment {
                                     e.printStackTrace();
                                 }
                                 savedPosition = "positionCell";
-                                listener.prepRestart();
+                                listener.Restart();
                                 try {
                                     getJSON(savedPosition);
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
                             } else {
+
                                 // If player has the required item, remove item from inventory and set positions
                                 // Has the same function if there is no required item
                                 // Function getJSON() is recalled here
@@ -191,7 +195,7 @@ public class StoryFragment extends Fragment {
                                         positionNext = choiceInfo.getString("nextPosition");
                                         savedPosition = positionNext;
 
-                                        // Saves text to journal when choice is selected
+                                        // Saves text and btnText to journal when choice is selected
                                         GameActivity.saveToJournal(info.getString("text"), getActivity());
                                         GameActivity.saveToJournal(choiceInfo.getString("btnText"), getActivity());
 
@@ -201,7 +205,7 @@ public class StoryFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                 }
-                                // Else change positionNext to noItemPosition and recall getJSON() with that
+                                // If they do not have the required item, change positionNext to noItemPosition and recall getJSON() with that
                                 else {
                                     positionNext = noItemPosition1;
                                     savedPosition = positionNext;
@@ -400,6 +404,10 @@ public class StoryFragment extends Fragment {
         noItemPosition4 = "";
     }
 
+    /**
+     * Makes sure to set Interface listener when fragment is created
+     * @param context Context used to set listener
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -410,6 +418,9 @@ public class StoryFragment extends Fragment {
         }
     }
 
+    /**
+     * Sets listener to null when fragment is destroyed
+     */
     @Override
     public void onDetach() {
         super.onDetach();

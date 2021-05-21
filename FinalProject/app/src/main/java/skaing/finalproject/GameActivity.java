@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/**
+ * Game Activity class that allows communication between fragments and itself.
+ * Contains methods that are used in multiple fragments.
+ */
 public class GameActivity extends AppCompatActivity implements StoryFragment.playerDeath {
     public static Fragment storyFragment, graveyardFragment;
     public static ArrayList<String> inventory = new ArrayList<>();
@@ -122,10 +126,6 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
         return itemFound;
     }
 
-    public static void setInventory(ArrayList<String> savedInventory) {
-        inventory = savedInventory;
-    }
-
     /**
      * Adds item to inventory
      * @param item String that is the item being added
@@ -176,8 +176,9 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
     }
 
     /**
-     * This will read String FILE_NAME text file to display on Journal Fragment
+     * This will read String FILE_NAME (journal.txt) text file
      * @param context Context used to open the file
+     * @return String that is what the read file was copied into
      */
     public static String readFile(Context context) {
         FileInputStream fis = null;
@@ -195,7 +196,6 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
             }
 
             readText = sb.toString();
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -212,7 +212,7 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
     }
 
     /**
-     * This will clear String FILE_NAME text file when game is started
+     * This will clear String FILE_NAME (journal.txt) text file when game is started
      */
     private void clearJournalText() {
         String empty = "";
@@ -235,22 +235,12 @@ public class GameActivity extends AppCompatActivity implements StoryFragment.pla
     }
 
     /**
-     * Overwritten onStop() to act as a GAME OVER
-     * Will empty players inventory. Journal will empty automatically
+     * Is called when player makes a choice that leads to a game over.
+     * Saves Journal to String storedText. Clears information in inventory and journal.
+     * Places storedText in Graveyard.
      */
     @Override
-    protected void onStop() {
-        super.onStop();
-        clearInventory();
-    }
-
-    /**
-     * Is called when player makes a choice that leads to a game over
-     * Saves Journal to String storedText, Clears information in inventory and journal
-     * Places storedText in Graveyard
-     */
-    @Override
-    public void prepRestart() {
+    public void Restart() {
         // Get journal text and store
         String storedText = readFile(this);
 

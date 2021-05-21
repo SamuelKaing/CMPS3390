@@ -11,6 +11,10 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+/**
+ * Fragment class that will display player decisions up until their
+ * current position
+ */
 public class JournalFragment extends Fragment {
     private View view;
     private ImageButton btnBack;
@@ -27,12 +31,15 @@ public class JournalFragment extends Fragment {
         journalText = view.findViewById(R.id.tvJournal);
         svJournal = view.findViewById(R.id.svJournal);
 
+        // Checks to see if it is the first time fragment is opened
+        // Recovers savedState if it is not
         if(savedState != null) {
             journalText.setText(savedState.getString("savedJournal"));
         } else {
             journalText.setText("");
         }
 
+        // Back button that switches back to story fragment when pressed
         btnBack = view.findViewById(R.id.btnBackJournal);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,8 +52,10 @@ public class JournalFragment extends Fragment {
             }
         });
 
+        // Reads journal.txt file and sets journalText to it
         journalText.setText(GameActivity.readFile(getActivity()));
 
+        // Saving journalText to make sure it doesn't disappear when fragment is changed
         savedJournal = journalText.toString();
 
         return view;

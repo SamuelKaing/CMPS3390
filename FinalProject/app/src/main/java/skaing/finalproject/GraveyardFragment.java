@@ -39,7 +39,6 @@ import java.nio.charset.StandardCharsets;
 public class GraveyardFragment extends Fragment implements GameActivity.accessGraveyard {
     private View view;
     private ImageButton btnBack;
-    private Button btnClearGraveyard;
     private TextView tvGraveyard;
     private TextView tvTitle;
     private final static String FILE_NAME = "graveyard.json";
@@ -50,12 +49,13 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_graveyard, container, false);
 
+        // Just a title for the fragment
         tvTitle = view.findViewById(R.id.tvTitle);
         tvTitle.setPaintFlags(tvTitle.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         tvGraveyard = view.findViewById(R.id.tvGraveyard);
 
-
+        // Back button that switches back to story fragment when pressed
         btnBack = view.findViewById(R.id.btnBackGraveyard);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +69,7 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
         });
 
         try {
-            readGraveyardJSON("tombstone", getActivity());
+            tvGraveyard.setText(readGraveyardJSON("tombstone", getActivity()));
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
@@ -110,14 +110,13 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
                 }
             }
         }
-
-
     }
 
     /**
-     * Reads graveyard.json file and adds it to the ExpandableListView (Graveyard)
+     * Reads graveyard.json file and sets tvGraveyard's text to what is read
+     * @return String that is read from json file
      */
-    private void readGraveyardJSON(String tombstone, Context context) throws JSONException, IOException {
+    private String readGraveyardJSON(String tombstone, Context context) throws JSONException, IOException {
         FileInputStream fis = null;
 
             fis = context.openFileInput(FILE_NAME);
@@ -133,16 +132,6 @@ public class GraveyardFragment extends Fragment implements GameActivity.accessGr
             JSONObject jsonObject = new JSONObject(sb.toString());
             Log.d("OBJECT: ", jsonObject.toString());
 
-            tvGraveyard.setText(jsonObject.getString("tombstone"));
-
+            return jsonObject.getString("tombstone");
     }
-
-    /**
-     * Clears graveyard when button is pressed. Helps the player avoid clutter.
-     */
-    private void clearGraveyard() {
-
-    }
-
-
 }
