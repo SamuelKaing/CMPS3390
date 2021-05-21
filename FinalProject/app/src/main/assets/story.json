@@ -29,7 +29,7 @@
     "choice2": [{
       "btnText": "Take a brick",
       "nextPosition": "positionCell",
-      "pickUp": "brick",
+      "pickUp": "Brick",
       "required": []
     }],
     "choice3": [],
@@ -50,7 +50,7 @@
       "nextPosition": "positionHall",
       "pickUp": "",
       "required": [{
-        "item": "brick",
+        "item": "Brick",
         "nextPosition": "positionNoBrick"
       }]
     }],
@@ -126,7 +126,7 @@
     "choice1": [{
       "btnText": "Take the torch",
       "nextPosition": "positionEndHallTorch",
-      "pickUp": "torch",
+      "pickUp": "Torch",
       "required": []
     }],
     "choice2": [{
@@ -134,7 +134,7 @@
       "nextPosition": "positionSmallRoom",
       "pickUp": "",
       "required": [{
-        "item": "torch",
+        "item": "Torch",
         "nextPosition": "positionTooDark"
       }]
     }],
@@ -149,7 +149,7 @@
       "nextPosition": "positionSmallRoom",
       "pickUp": "",
       "required": [{
-        "item": "torch",
+        "item": "Torch",
         "nextPosition": "positionTooDark"
       }]
     }],
@@ -228,6 +228,19 @@
     "choice4": []
   }],
 
+  "positionBridge": [{
+    "text": "The lock clicks and falls the the floor. As you walk across the bridge, you get a sense of freedom and are inspired to keep going. ...  You've escaped the dungeon. Thanks for playing.",
+    "choice1": [{
+      "btnText": "GAME OVER",
+      "nextPosition": "RESTART",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
   "positionStairwayUp": [{
     "text": "There's a small window giving light at the top of the staircase.",
     "choice1": [{
@@ -242,6 +255,161 @@
       "pickUp": "",
       "required": []
     }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionStairwayUpTop": [{
+    "text": "At the top of the staircase, you find another room. In the room, there is a large bookshelf, a chest, and a wardrobe.",
+    "choice1": [{
+      "btnText": "Go back downstairs",
+      "nextPosition": "positionSmallRoom",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Approach the chest",
+      "nextPosition": "positionChest",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice3": [{
+      "btnText": "Approach the bookshelf",
+      "nextPosition": "positionBookshelf",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice4": [{
+      "btnText": "Approach the wardrobe",
+      "nextPosition": "positionWardrobe",
+      "pickUp": "",
+      "required": []
+    }]
+  }],
+
+  "positionChest": [{
+    "text": "The chest is shut tight. It contains a circular depression. Something could fit in it",
+    "choice1": [{
+      "btnText": "Go back",
+      "nextPosition": "positionStairwayUpTop",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Try and open the chest",
+      "nextPosition": "positionChestOpen",
+      "pickUp": "",
+      "required": [{
+        "item": "Ornate Disk",
+        "nextPosition": "positionChestFail"
+      }]
+    }],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionChestFail": [{
+    "text": "There doesn't seem to be any way to open it",
+    "choice1": [{
+      "btnText": "Try something else",
+      "nextPosition": "positionChest",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionChestOpen": [{
+    "text": "You place the Ornate Disk in the depression. The chest clicks and pops open revealing a large iron key inside",
+    "choice1": [{
+      "btnText": "Take it",
+      "nextPosition": "positionStairwayUpTop",
+      "pickUp": "Iron Door Key",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionBookshelf": [{
+    "text": "There are an array of books. Only four stand out, however.  They are titled, (Venus's Coming), (The Own in the Vale), (A.P.P 3390), and (The Time of the Betrayed)  ",
+    "choice1": [{
+      "btnText": "Open Venus's Coming",
+      "nextPosition": "positionBook",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [{
+      "btnText": "Open The Own in the Vale",
+      "nextPosition": "positionBook",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice3": [{
+      "btnText": "Open A.P.P 3390",
+      "nextPosition": "positionDisk",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice4": [{
+      "btnText": "The Time of the Betrayed",
+      "nextPosition": "positionBook",
+      "pickUp": "",
+      "required": []
+    }]
+  }],
+
+  "positionBook": [{
+    "text": "The book seems interesting, but there's nothing important inside.",
+    "choice1": [{
+      "btnText": "Look at another book",
+      "nextPosition": "positionBookshelf",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionDisk": [{
+    "text": "The strangest named of the bunch, an ornate stone disk fall out onto the ground.",
+    "choice1": [{
+      "btnText": "Pick it up",
+      "nextPosition": "positionStairwayUpTop",
+      "pickUp": "Ornate Disk",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionWardrobe": [{
+    "text": "The wardrobe seems ordinary. You open it only to find a single coat hanging.",
+    "choice1": [{
+      "btnText": "Search the coat",
+      "nextPosition": "positionCoat",
+      "pickUp": "",
+      "required": []
+    }],
+    "choice2": [],
+    "choice3": [],
+    "choice4": []
+  }],
+
+  "positionCoat": [{
+    "text": "You find a gold ring in the pockets.",
+    "choice1": [{
+      "btnText": "Take the ring",
+      "nextPosition": "positionStairwayUpTop",
+      "pickUp": "Gold Ring",
+      "required": []
+    }],
+    "choice2": [],
     "choice3": [],
     "choice4": []
   }],
